@@ -170,6 +170,12 @@ ChatGPT peut vous aider, ou déroulez le contenu caché ci-dessous:
 <summary>📋 Contenu du fichier .cursor/feature-planning.mdc</summary>
 
 ```markdown
+---
+description: Features and technical specifications
+globs: 
+alwaysApply: true
+---
+
 # FocusFlow – Feature Planning (Spécifications)
 
 FocusFlow est une application de gestion de tâches basée sur la méthode GTD (Getting Things Done).
