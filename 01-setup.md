@@ -73,11 +73,11 @@ Les **MCP (Model Context Protocol)** étendent les capacités de Cursor AI en co
 - **📚 Deepwiki MCP** : Accès aux documentations GitHub
 - **🧪 Playwright MCP** : Tests E2E automatisés
 
-Vous trouverez une liste de serveurs MCP ici: https://mcp.so/, avec leurs instructions d'installation respectives.
+Vous trouverez une liste de serveurs MCP et leurs instructions d'installation respectives ici: [mcp.so](https://mcp.so).
 
 ### 2.1 Configuration complète des MCP
 
-Créez ou éditez le fichier `~/.cursor/mcpServers.json` :
+Créez ou éditez le fichier `~/.cursor/mcpServers.json` (accessible également depuis les paramètres de Cursor). :
 
 <details>
 <summary>📋 Cliquez pour voir la configuration complète</summary>
@@ -85,7 +85,7 @@ Créez ou éditez le fichier `~/.cursor/mcpServers.json` :
 ```json
 {
   "mcpServers": {
-    "Framelink Figma MCP": {
+    "figma": {
       "command": "npx",
       "args": [
         "-y",
@@ -94,7 +94,7 @@ Créez ou éditez le fichier `~/.cursor/mcpServers.json` :
         "--stdio"
       ]
     },
-    "mcp-deepwiki": {
+    "deepwiki": {
       "command": "npx",
       "args": ["-y", "mcp-deepwiki@latest"]
     },
