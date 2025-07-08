@@ -77,6 +77,8 @@ npm run dev
 
 ## 🎨 Aperçu de l'application
 
+[Maquette Figma de référence](https://www.figma.com/design/IhVR4yEdIoYXqZWPnjM11R/)
+
 ### Interface utilisateur
 - **Design minimaliste** inspiré de la méthode GTD
 - **Responsive** : adapté mobile et desktop
