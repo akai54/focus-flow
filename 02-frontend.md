@@ -59,7 +59,17 @@ Dans Cursor, ouvrez le chat Agent (🪄) et utilisez la commande :
 
 ## ⚛️ 2. Génération des composants React
 
-### 2.1 Prompt pour la génération
+### 2.1 Lancer l'application
+
+```bash
+npm run dev
+```
+
+L'application doit être accessible sur `http://localhost:5173`
+
+### 2.2 Prompt pour la génération
+
+Avant de 
 
 Une fois la maquette importée, utilisez ce prompt dans Cursor :
 
@@ -78,7 +88,9 @@ Utilise le store Zustand (useTaskStore) pour la gestion d'état.
 Respecte fidèlement le style du design Figma.
 ```
 
-### 2.2 Structure des composants générés
+Vous pourriez avoir besoin de plusieurs interactions avec l'agent Cursor, pour créer ces 2 pages.
+
+### 2.3 Structure des composants générés
 
 Vous pouvez review un par un les fichiers générés, puis les accepter:
 
@@ -358,15 +370,7 @@ export default App;
 
 ## 🧪 4. Tests E2E avec Playwright
 
-### 4.1 Lancer l'application
-
-```bash
-npm run dev
-```
-
-L'application doit être accessible sur `http://localhost:5173`
-
-### 4.2 Créer des tests via Cursor AI
+### 4.1 Créer des tests via Cursor AI
 
 Dans le chat Cursor, utilisez ces prompts pour tester automatiquement :
 
@@ -390,7 +394,7 @@ Clique sur l'icône de suppression 🗑️
 Vérifie que la tâche a disparu de la liste
 ```
 
-### 4.3 Résultats attendus
+### 4.2 Résultats attendus
 
 ```
 ✅ Test passed: Task successfully added to the list
