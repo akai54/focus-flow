@@ -32,8 +32,6 @@ Avant de commencer, assurez-vous d'avoir installé :
 - **Cursor AI** ([télécharger ici](https://cursor.sh/))
 - **Compte Figma** (pour l'import de designs)
 
-> 💡 **Astuce** : Créez un dossier de projet dédié et ouvrez-le dans Cursor pour bénéficier de l'auto-complétion et des outils IA.
-
 ## 🛠️ 1. Initialisation du projet
 
 ### 1.1 Cloner le boilerplate
