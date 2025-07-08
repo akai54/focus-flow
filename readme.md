@@ -2,7 +2,7 @@
 
 > Tutoriel complet : **React + TypeScript + Tailwind CSS + Cursor AI**
 
-![FocusFlow Banner](https://img.shields.io/badge/FocusFlow-GTD%20Task%20Manager-blue?style=for-the-badge)
+![FocusFlow Banner](https://img.shields.io/badge/FocusFlow-GTD%20Task%20Manager-blue)
 ![React](https://img.shields.io/badge/React-18+-61DAFB?style=flat&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?style=flat&logo=typescript)
 ![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=flat&logo=tailwind-css)
