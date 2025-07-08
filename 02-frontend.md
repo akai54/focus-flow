@@ -398,13 +398,14 @@ Vérifie que la tâche a disparu de la liste
 ✅ Test passed: Task removed from the list
 ```
 
-> 💡 **Astuce** : Activez le mode Auto-Run dans Cursor Settings > Features > MCP pour exécuter les tests sans confirmation manuelle.
+> 💡 **Astuce** : Activez le mode Auto-Run dans Cursor Settings > Chat > Auto-Run pour exécuter les tests sans confirmation manuelle.
+> Si les tests échouent, demandez à Cursor d’en identifier la cause, de corriger les erreurs et de relancer les tests jusqu’à ce qu’ils passent.
 
 ## 🎨 5. Optimisations et finitions
 
 ### 5.1 Filtres et statistiques
 
-Ajoutez des filtres pour améliorer l'UX :
+Ajoutez des filtres pour améliorer l'UX.
 
 **TaskFilter.tsx**
 
