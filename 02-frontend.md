@@ -36,7 +36,9 @@ Dans ce guide, nous allons :
 2. Copiez les éléments depuis l'[URL de référence](https://www.figma.com/file/VOTRE_ID/FocusFlow-Design), pour reproduire le template chez vous
 3. Récupérez l'URL de votre fichier (`https://www.figma.com/file/VOTRE_ID/...`)
 
-### 1.2 Importer via Cursor AI
+### 1.2 Importer l'écran "App" via Cursor AI
+
+Nous allons d'abord travailler sur le deuxième écran de la maquette Figma et vous pourrez réaliser la landing page s'il vous reste du temps à la fin.
 
 Dans Cursor, ouvrez le chat Agent (🪄) et utilisez la commande :
 
@@ -88,9 +90,9 @@ Utilise le store Zustand (useTaskStore) pour la gestion d'état.
 Respecte fidèlement le style du design Figma.
 ```
 
-Vous pourriez avoir besoin de plusieurs interactions avec l'agent Cursor, pour créer ces 2 pages.
+Vous pourriez avoir besoin de plusieurs interactions avec l'agent Cursor, pour créer cette page.
 
-### 2.3 Structure des composants générés
+#### Review
 
 Vous pouvez review un par un les fichiers générés, puis les accepter:
 
@@ -99,6 +101,10 @@ Vous pouvez review un par un les fichiers générés, puis les accepter:
 ...ou accepter l'ensemble des modifications apportées par l'agent cursor:
 
 <img width="500" alt="image" src="https://github.com/user-attachments/assets/c461f2c6-fea1-4c96-82a6-f0dc29feeb03" />
+
+### 2.3 Structure des composants générés
+
+Cursor devrait avoir produit des fichiers similaires à ceux-ci:
 
 **TaskInput.tsx**
 
@@ -251,10 +257,6 @@ export default function TaskPage() {
 
 </details>
 
-## 🏪 3. Configuration du store Zustand
-
-### 3.1 Types TypeScript
-
 **types/index.ts**
 
 <details>
@@ -278,8 +280,6 @@ export interface TaskStore {
 ```
 
 </details>
-
-### 3.2 Store Zustand avec persistance
 
 **store/index.ts**
 
@@ -338,8 +338,6 @@ export const useTaskStore = create<TaskStore>()(
 ```
 
 </details>
-
-### 3.3 Intégration dans App.tsx
 
 **App.tsx**
 
