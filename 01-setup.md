@@ -100,7 +100,7 @@ Créez ou éditez le fichier `~/.cursor/mcpServers.json` (accessible également 
     },
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/mcp@latest"]
+      "args": ["-y", "@playwright/mcp@latest"]
     }
   }
 }
