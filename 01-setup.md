@@ -73,7 +73,7 @@ Les **MCP (Model Context Protocol)** étendent les capacités de Cursor AI en co
 - **📚 Deepwiki MCP** : Accès aux documentations GitHub
 - **🧪 Playwright MCP** : Tests E2E automatisés
 
-Vous trouverez une liste de server MCP ici: https://mcp.so/, avec leurs instructions d'installation respectives.
+Vous trouverez une liste de serveurs MCP ici: https://mcp.so/, avec leurs instructions d'installation respectives.
 
 ### 2.1 Configuration complète des MCP
 
