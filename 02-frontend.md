@@ -29,11 +29,11 @@ Dans ce guide, nous allons :
 
 **URL de référence** : https://www.figma.com/design/IhVR4yEdIoYXqZWPnjM11R/Untitled?node-id=0-1&t=zUQ05Loi4gicKfyB-1
 
-> ⚠️ **Important** : Pour utiliser l'import Figma, vous devez créer votre propre fichier Figma et y reproduire le design, car le MCP nécessite les permissions d'accès.
+> ⚠️ **Important** : Pour utiliser le MCP Figma, vous devez créer votre propre fichier Figma et y reproduire le design, car le MCP nécessite les permissions d'accès.
 
 **Étapes :**
 1. Créez un nouveau fichier Figma
-2. Reproduisez le design FocusFlow ou importez les éléments depuis l'URL de référence
+2. Copiez les éléments depuis l'[URL de référence](https://www.figma.com/file/VOTRE_ID/FocusFlow-Design), pour reproduire le template chez vous
 3. Récupérez l'URL de votre fichier (`https://www.figma.com/file/VOTRE_ID/...`)
 
 ### 1.2 Importer via Cursor AI
