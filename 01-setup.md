@@ -130,7 +130,7 @@ Remplacez `VOTRE_TOKEN_FIGMA` dans la configuration MCP par votre token.
 Une fois configuré, vous pourrez utiliser la commande `::figma` dans le chat Cursor :
 
 ```
-::figma https://www.figma.com/file/ID/NomDuFichier?node-id=0%3A1
+::figma https://www.figma.com/design/IhVR4yEdIoYXqZWPnjM11R/Untitled
 ```
 
 ### 2.3 Configuration du MCP Deepwiki
@@ -152,14 +152,14 @@ Le MCP Playwright permet d'automatiser les tests E2E directement depuis Cursor.
 
 Dans les paramètres de Cursor, vérifiez que les serveurs MCP et notamment le serveur Playwright apparaîssent en "vert".
 
-## 📄 3. Création des règles de projet
+## 📄 3. Création des Cursor rules
 
-Les règles de projet guident l'IA dans la génération de code conforme aux spécifications.
+Les Cursor rules guident l'IA dans la génération de code conforme aux spécifications: code style, architecture, etc...
 
-### 3.1 Créer feature-planning.md
+### 3.1 Créer .cursor/feature-planning.mdc
 
 <details>
-<summary>📋 Contenu du fichier feature-planning.md</summary>
+<summary>📋 Contenu du fichier .cursor/feature-planning.mdc</summary>
 
 ```markdown
 # FocusFlow – Feature Planning (Spécifications)
@@ -192,10 +192,10 @@ FocusFlow est une application de gestion de tâches basée sur la méthode GTD (
 
 </details>
 
-### 3.2 Créer workflow-ai.md
+### 3.2 Créer .cursor/workflow-ai.mdc
 
 <details>
-<summary>📋 Contenu du fichier workflow-ai.md</summary>
+<summary>📋 Contenu du fichier .cursor/workflow-ai.mdc</summary>
 
 ```markdown
 ---
@@ -241,21 +241,7 @@ Tu es un agent spécialisé dans le développement au sein d'une base de code ex
 
 </details>
 
-### 3.3 Créer les fichiers
-
-```bash
-# Créer feature-planning.md
-cat > feature-planning.md << 'EOF'
-[Contenu du fichier ci-dessus]
-EOF
-
-# Créer workflow-ai.md
-cat > workflow-ai.md << 'EOF'
-[Contenu du fichier ci-dessus]
-EOF
-```
-
-> ✅ **Vérification** : Les fichiers doivent apparaître dans la section "Rules" de Cursor.
+> ✅ **Vérification**: Les fichiers doivent apparaître dans la section "Rules" des paramètres de Cursor.
 
 ## ➡️ Suite du tutoriel
 
