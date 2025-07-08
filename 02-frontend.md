@@ -80,6 +80,14 @@ Respecte fidèlement le style du design Figma.
 
 ### 2.2 Structure des composants générés
 
+Vous pouvez review un par un les fichiers générés, puis les accepter:
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/75ab428a-f31b-4f02-ad2c-56f5a6371344" />
+
+...ou accepter l'ensemble des modifications apportées par l'agent cursor:
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/c461f2c6-fea1-4c96-82a6-f0dc29feeb03" />
+
 **TaskInput.tsx**
 
 <details>
