@@ -7,7 +7,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?style=flat&logo=typescript)
 ![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=flat&logo=tailwind-css)
 
-**FocusFlow** est une application de gestion de tâches inspirée de la méthode GTD (Getting Things Done), développée avec un stack moderne et l'assistance de l'IA. Ce codelab vous guide dans la création d'une application complète, de la maquette Figma au déploiement.
+**FocusFlow** est une application de gestion de tâches inspirée de la méthode GTD (Getting Things Done), développée avec une stack moderne et l'assistance de l'IA. Ce codelab vous guide dans la création d'une application complète, de la maquette Figma au déploiement.
 
 ## 🎯 Qu'allez-vous apprendre ?
 
