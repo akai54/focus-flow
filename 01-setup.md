@@ -116,8 +116,10 @@ Créez ou éditez le fichier `~/.cursor/mcpServers.json` (accessible également 
 
 1. Connectez-vous à [Figma](https://figma.com)
 2. Allez dans **Settings** → **Account** → **Personal Access Tokens**
-3. Générez un nouveau token avec les permissions API
-4. ⚠️ **Conservez ce token précieusement** (il ne sera affiché qu'une seule fois)
+3. Générez un nouveau token avec les permissions API ci-dessous:
+   <img width="435" alt="image" src="https://github.com/user-attachments/assets/5407a6a1-f6ed-4d35-b346-4b2c157fb012" />
+
+5. ⚠️ **Conservez ce token précieusement** (il ne sera affiché qu'une seule fois)
 
 #### Étape 2 : Configurer le token dans Cursor
 
