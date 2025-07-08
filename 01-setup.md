@@ -148,8 +148,9 @@ Le MCP Playwright permet d'automatiser les tests E2E directement depuis Cursor.
 
 > 📝 **Note** : La première utilisation peut prendre du temps (téléchargement des navigateurs).
 
-**Test de la configuration :**
-Vérifiez que le serveur Playwright apparaît en "vert" dans la liste des MCP de Cursor.
+### 2.5 Test de la configuration
+
+Dans les paramètres de Cursor, vérifiez que les serveurs MCP et notamment le serveur Playwright apparaîssent en "vert".
 
 ## 📄 3. Création des règles de projet
 
