@@ -2,12 +2,12 @@
 
 > Tutoriel complet : **React + TypeScript + Tailwind CSS + Cursor AI**
 
-![FocusFlow Banner](https://img.shields.io/badge/FocusFlow-GTD%20Task%20Manager-blue?style=for-the-badge)
+![FocusFlow Banner](https://img.shields.io/badge/FocusFlow-GTD%20Task%20Manager-blue)
 ![React](https://img.shields.io/badge/React-18+-61DAFB?style=flat&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?style=flat&logo=typescript)
 ![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=flat&logo=tailwind-css)
 
-**FocusFlow** est une application de gestion de tâches inspirée de la méthode GTD (Getting Things Done), développée avec un stack moderne et l'assistance de l'IA. Ce codelab vous guide dans la création d'une application complète, de la maquette Figma au déploiement.
+**FocusFlow** est une application de gestion de tâches inspirée de la méthode GTD (Getting Things Done), développée avec une stack moderne et l'assistance de l'IA. Ce codelab vous guide dans la création d'une application complète, de la maquette Figma au déploiement.
 
 ## 🎯 Qu'allez-vous apprendre ?
 
@@ -76,6 +76,8 @@ npm run dev
 > 📖 **Suite** : Consultez le [Guide 1 - Setup](01-setup.md) pour la configuration complète.
 
 ## 🎨 Aperçu de l'application
+
+[Maquette Figma de référence](https://www.figma.com/design/IhVR4yEdIoYXqZWPnjM11R/)
 
 ### Interface utilisateur
 - **Design minimaliste** inspiré de la méthode GTD
