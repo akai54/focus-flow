@@ -1,6 +1,6 @@
 # 🚀 FocusFlow - De la maquette Figma à l'application full-stack
 
-> Tutoriel complet : **React + TypeScript + Tailwind CSS + Cursor AI**
+> Tutoriel complet : **Cursor AI**
 
 ![FocusFlow Banner](https://img.shields.io/badge/FocusFlow-GTD%20Task%20Manager-blue)
 ![React](https://img.shields.io/badge/React-18+-61DAFB?style=flat&logo=react)
