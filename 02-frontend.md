@@ -71,7 +71,7 @@ L'application doit être accessible sur `http://localhost:5173`
 
 ### 2.2 Prompt pour la génération
 
-Une fois la maquette importée, utilisez ce prompt dans Cursor :
+Une fois la maquette importée, demander à Cursor de construire cette page. Voici un prompt que vous pourriez améliorer:
 
 ```
 Sur la base de la maquette Figma importée, implémente l'interface FocusFlow en React + TypeScript avec Tailwind CSS.
@@ -88,7 +88,7 @@ Utilise le store Zustand (useTaskStore) pour la gestion d'état.
 Respecte fidèlement le style du design Figma.
 ```
 
-Vous pourriez avoir besoin de plusieurs interactions avec l'agent Cursor, pour créer cette page.
+Vous pourriez avoir besoin de plusieurs interactions avec l'agent Cursor, pour (vibe-)coder cette page.
 
 #### Review
 
