@@ -71,8 +71,6 @@ L'application doit être accessible sur `http://localhost:5173`
 
 ### 2.2 Prompt pour la génération
 
-Avant de 
-
 Une fois la maquette importée, utilisez ce prompt dans Cursor :
 
 ```
