@@ -28,7 +28,7 @@
 
 Avant de commencer, assurez-vous d'avoir installé :
 
-- **Node.js** (v16+ recommandé) et npm
+- **Node.js** (v16+ recommandé), npm et **npx**
 - **Cursor AI** ([télécharger ici](https://cursor.sh/))
 - **Compte Figma** (pour l'import de designs)
 
