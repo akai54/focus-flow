@@ -76,7 +76,7 @@ Une fois la maquette importée, demander à Cursor de construire cette page. Voi
 ```
 Sur la base de la maquette Figma importée, implémente l'interface FocusFlow en React + TypeScript avec Tailwind CSS.
 
-Suis les règles : @workflow-ai.md & @feature-planning.md
+Suis les règles : @workflow-ai.mdc & @feature-planning.mdc
 
 Composants à créer :
 - TaskInput : champ de saisie + bouton d'ajout
