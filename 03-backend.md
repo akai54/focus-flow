@@ -298,103 +298,144 @@ module.exports = router;
 - Implémentez une pagination : `GET /api/tasks?page=1&limit=10`
 - Créez un middleware de logging des requêtes
 
-### 3.4 Génération du serveur principal
+## 🔄 4. Défi : Intégration frontend
 
-Prompt Cursor pour le serveur Express :
+### 4.1 🎯 Objectif
+
+Faire communiquer votre frontend React avec l'API backend que vous venez de créer.
+
+### 4.2 🤔 Réflexion intégration
+
+Comment connecter un frontend à une API ?
+- Où appeler les endpoints de votre API ?
+- Comment gérer les erreurs réseau ?
+- Comment remplacer localStorage par des appels API ?
+- Où stocker l'URL de l'API ?
+
+### 4.3 💪 Mission intégration
+
+Adaptez le frontend pour utiliser votre API :
+1. **Service API** : Créer un service pour les appels fetch
+2. **Store Zustand** : Modifier pour utiliser l'API au lieu de localStorage
+3. **Gestion d'erreurs** : Afficher les erreurs réseau
+4. **Loading states** : Afficher les états de chargement
+
+<details>
+<summary>🆘 Besoin d'aide ? Exemple de prompt</summary>
 
 ```
 Suis les règles : @workflow-ai.md & @feature-planning.md
 
-Crée le serveur principal Express pour FocusFlow :
+Adapte le frontend FocusFlow pour utiliser l'API backend :
 
-1. **Analyse** : Utilise les routes créées précédemment
-2. **Configuration** : CORS, JSON parsing, logging
-3. **Routes** : Intégration des routes tasks + health check
-4. **Middleware global** : Gestion d'erreurs et logging
-5. **Environnement** : Variables d'env avec dotenv
+1. **Service API** : Crée un service pour communiquer avec l'API
+2. **Store Zustand** : Remplace localStorage par appels API
+3. **Gestion erreurs** : Affiche les erreurs réseau
+4. **Loading states** : Ajoute des indicateurs de chargement
+5. **Environnement** : Utilise VITE_API_URL pour la configuration
 
-Fonctionnalités :
-- CORS configuré pour le frontend (port 5173)
-- Logging des requêtes
-- Gestion d'erreurs globale
-- Health check endpoint
-- Démarrage sur port 3001
+Endpoints à implémenter :
+- getTasks() : GET /api/tasks
+- createTask(title) : POST /api/tasks
+- updateTask(id, updates) : PUT /api/tasks/:id
+- deleteTask(id) : DELETE /api/tasks/:id
 
-Fichier : api/src/index.ts
-Respect les bonnes pratiques Express 2024.
-```
-
-**Code généré attendu :**
-
-<details>
-<summary>🔍 Serveur généré - api/src/index.ts</summary>
-
-```typescript
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import taskRoutes from './routes/tasks';
-
-// Configuration de l'environnement
-dotenv.config();
-
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-// Middlewares globaux
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  credentials: true
-}));
-
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
-
-// Middleware de logging
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-  next();
-});
-
-// Routes API
-app.use('/api/tasks', taskRoutes);
-
-// Route de santé
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
-  });
-});
-
-// Middleware de gestion d'erreurs globales
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Erreur non gérée:', err);
-  
-  res.status(500).json({
-    success: false,
-    error: process.env.NODE_ENV === 'production' 
-      ? 'Erreur interne du serveur' 
-      : err.message
-  });
-});
-
-// Démarrage du serveur
-app.listen(PORT, () => {
-  console.log(`🚀 API FocusFlow démarrée sur http://localhost:${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/health`);
-  console.log(`📝 Tasks API: http://localhost:${PORT}/api/tasks`);
-});
-
-export default app;
+Utilise JavaScript et les bonnes pratiques fetch API 2024.
 ```
 
 </details>
 
-### 3.5 Configuration des variables d'environnement
+### 4.4 ✅ Points de contrôle
 
-⚙️ **Astuce Cursor :**  
+Vérifiez que votre intégration inclut :
+
+- ✅ **Service API** : Fonctions pour tous les endpoints
+- ✅ **Store modifié** : Appels API au lieu de localStorage
+- ✅ **Gestion d'erreurs** : Affichage des erreurs réseau
+- ✅ **Loading states** : Indicateurs de chargement
+- ✅ **Configuration** : URL de l'API via .env
+
+<details>
+<summary>🔍 Exemple de code attendu</summary>
+
+```javascript
+// src/services/api.js
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
+class ApiError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
+}
+
+async function apiCall(endpoint, options = {}) {
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      ...options,
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new ApiError(data.error || 'Erreur API', response.status);
+    }
+
+    return data.data;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError('Erreur de connexion', 0);
+  }
+}
+
+export const taskApi = {
+  getTasks: () => apiCall('/tasks'),
+  createTask: (title) => apiCall('/tasks', {
+    method: 'POST',
+    body: JSON.stringify({ title }),
+  }),
+  updateTask: (id, updates) => apiCall(`/tasks/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(updates),
+  }),
+  deleteTask: (id) => apiCall(`/tasks/${id}`, {
+    method: 'DELETE',
+  }),
+};
+```
+
+</details>
+
+### 4.5 🏆 Challenge bonus
+
+**Optimisations avancées :**
+- Implémentez des "optimistic updates" (mise à jour optimiste)
+- Ajoutez un cache local pour les tâches
+- Créez un système de retry automatique
+- Ajoutez des indicateurs de synchronisation
+
+## 🧪 5. Défi : Tests d'intégration
+
+### 5.1 🎯 Objectif
+
+Vérifier que votre intégration frontend/backend fonctionne parfaitement.
+
+### 5.2 🤔 Réflexion tests
+
+Comment tester une intégration complète ?
+- Quels sont les parcours utilisateur critiques ?
+- Comment vérifier la persistance des données ?
+- Que faire si l'API est indisponible ?
+- Comment tester les états de chargement ?
+
+### 5.3 💪 Mission tests  
 Par défaut, Cursor bloque la création et l’édition automatique des fichiers `.env` pour protéger vos secrets (Dotfile Protection).  Si Auto-Run est activé.
   
 **Pour permettre à Cursor de générer ou modifier les fichiers `.env` (ex : `api/.env`) lors de l’auto-run ou via les prompts, vous devez désactiver la protection des fichiers cachés (Dotfile protection) dans les paramètres Cursor :**  
@@ -669,158 +710,6 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
 
 </details>
 
-### 4.3 Génération du composant d'erreurs
-
-Prompt Cursor pour créer le composant d'erreurs :
-
-```
-Suis les règles : @workflow-ai.md & @feature-planning.md
-
-Crée un composant pour afficher les erreurs API :
-
-1. **Analyse** : Utilise le store Zustand avec error state
-2. **Affichage** : Composant conditionnel (masqué si pas d'erreur)
-3. **Style** : Design avec Tailwind (rouge, accessible)
-4. **Interaction** : Bouton pour fermer l'erreur
-5. **UX** : Icône d'alerte + message + bouton fermer
-
-Fonctionnalités :
-- Affichage conditionnel de l'erreur
-- Styling avec Tailwind (bg-red-50, border-red-200)
-- Bouton de fermeture (clearError)
-- Accessibilité (couleurs contrastées)
-
-Fichier : src/components/ErrorMessage.tsx
-Respect les bonnes pratiques React 2024.
-```
-
-**Code généré attendu :**
-
-<details>
-<summary>🔍 Composant généré - src/components/ErrorMessage.tsx</summary>
-
-```typescript
-import { useTaskStore } from '../store';
-
-export default function ErrorMessage() {
-  const { error, clearError } = useTaskStore();
-
-  if (!error) return null;
-
-  return (
-    <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between">
-      <div className="flex items-center">
-        <span className="text-red-800">⚠️ {error}</span>
-      </div>
-      <button
-        onClick={clearError}
-        className="text-red-600 hover:text-red-800 transition-colors"
-      >
-        ✕
-      </button>
-    </div>
-  );
-}
-```
-
-</details>
-
-### 4.4 Mise à jour de TaskPage
-
-Prompt Cursor pour adapter la page principale :
-
-```
-Suis les règles : @workflow-ai.md & @feature-planning.md
-
-Met à jour TaskPage pour intégrer l'API backend :
-
-1. **Analyse** : Examine la TaskPage existante
-2. **Chargement initial** : Ajoute useEffect pour loadTasks()
-3. **Gestion erreurs** : Intègre le composant ErrorMessage
-4. **Loading state** : Ajoute un spinner pendant le chargement
-5. **Préservation** : Conserve le design existant
-
-Fonctionnalités :
-- useEffect pour charger les tâches au montage
-- Affichage du spinner pendant loading
-- Intégration ErrorMessage avant TaskInput
-- Conservation du layout responsive
-
-Fichier : src/pages/TaskPage.tsx
-Conserve la compatibilité avec les composants existants.
-```
-
-**Code généré attendu :**
-
-<details>
-<summary>🔍 Page mise à jour - src/pages/TaskPage.tsx</summary>
-
-```typescript
-import { useEffect } from 'react';
-import { useTaskStore } from '../store';
-import TaskInput from '../components/TaskInput';
-import TaskList from '../components/TaskList';
-import ErrorMessage from '../components/ErrorMessage';
-
-export default function TaskPage() {
-  const { loadTasks, loading } = useTaskStore();
-
-  useEffect(() => {
-    loadTasks();
-  }, [loadTasks]);
-
-  return (
-    <div className="max-w-2xl mx-auto p-4 sm:p-6">
-      <header className="text-center mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
-          FocusFlow
-        </h1>
-        <p className="text-sm sm:text-base text-gray-600">
-          Organisez vos tâches avec la méthode GTD
-        </p>
-      </header>
-      
-      <ErrorMessage />
-      
-      {loading && (
-        <div className="text-center py-4">
-          <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-          <span className="ml-2 text-gray-600">Chargement...</span>
-        </div>
-      )}
-      
-      <TaskInput />
-      <TaskList />
-    </div>
-  );
-}
-```
-
-</details>
-
-### 4.5 Configuration frontend
-
-Prompt Cursor pour les variables d'environnement :
-
-```
-Crée les variables d'environnement pour le frontend :
-
-**Fichier** : .env (racine du projet)
-**Variable** : VITE_API_URL=http://localhost:3001/api
-
-Assure-toi que ce fichier soit listé dans .gitignore.
-```
-
-**Configuration générée :**
-
-<details>
-<summary>🔍 Variables d'environnement - .env</summary>
-
-```env
-VITE_API_URL=http://localhost:3001/api
-```
-
-</details>
 
 ## 🧪 6. Défi : Tests d'intégration
 
