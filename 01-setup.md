@@ -115,7 +115,7 @@ Créez ou éditez le fichier `~/.cursor/mcpServers.json` (accessible également 
 #### Étape 1 : Obtenir un token API Figma
 
 1. Connectez-vous à [Figma](https://figma.com)
-2. Allez dans **Settings** → **Account** → **Personal Access Tokens**
+2. Allez dans **Settings** → **Security** → **Personal Access Tokens**
 3. Générez un nouveau token avec les permissions API ci-dessous:
 4. ⚠️ **Conservez ce token précieusement** (il ne sera affiché qu'une seule fois)
 
