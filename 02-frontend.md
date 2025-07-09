@@ -29,14 +29,16 @@ Dans ce guide, nous allons :
 
 **URL de référence** : https://www.figma.com/design/IhVR4yEdIoYXqZWPnjM11R/Untitled?node-id=0-1&t=zUQ05Loi4gicKfyB-1
 
-> ⚠️ **Important** : Pour utiliser l'import Figma, vous devez créer votre propre fichier Figma et y reproduire le design, car le MCP nécessite les permissions d'accès.
+> ⚠️ **Important** : Pour utiliser le MCP Figma, vous devez créer votre propre fichier Figma et y reproduire le design, car le MCP nécessite les permissions d'accès.
 
 **Étapes :**
 1. Créez un nouveau fichier Figma
-2. Reproduisez le design FocusFlow ou importez les éléments depuis l'URL de référence
+2. Copiez les éléments depuis l'[URL de référence](https://www.figma.com/file/VOTRE_ID/FocusFlow-Design), pour reproduire le template chez vous
 3. Récupérez l'URL de votre fichier (`https://www.figma.com/file/VOTRE_ID/...`)
 
-### 1.2 Importer via Cursor AI
+### 1.2 Importer l'écran "App" via Cursor AI
+
+Nous allons d'abord travailler sur le deuxième écran de la maquette Figma et vous pourrez réaliser la landing page s'il vous reste du temps à la fin.
 
 Dans Cursor, ouvrez le chat Agent (🪄) et utilisez la commande :
 
@@ -59,9 +61,17 @@ Dans Cursor, ouvrez le chat Agent (🪄) et utilisez la commande :
 
 ## ⚛️ 2. Génération des composants React
 
-### 2.1 Prompt pour la génération
+### 2.1 Lancer l'application
 
-Une fois la maquette importée, utilisez ce prompt dans Cursor :
+```bash
+npm run dev
+```
+
+L'application doit être accessible sur `http://localhost:5173`
+
+### 2.2 Prompt pour la génération
+
+Une fois la maquette importée, demander à Cursor de construire cette page. Voici un prompt que vous pourriez améliorer:
 
 ```
 Sur la base de la maquette Figma importée, implémente l'interface FocusFlow en React + TypeScript avec Tailwind CSS.
@@ -78,7 +88,21 @@ Utilise le store Zustand (useTaskStore) pour la gestion d'état.
 Respecte fidèlement le style du design Figma.
 ```
 
-### 2.2 Structure des composants générés
+Vous pourriez avoir besoin de plusieurs interactions avec l'agent Cursor, pour (vibe-)coder cette page.
+
+#### Review
+
+Vous pouvez review un par un les fichiers générés, puis les accepter:
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/75ab428a-f31b-4f02-ad2c-56f5a6371344" />
+
+...ou accepter l'ensemble des modifications apportées par l'agent cursor:
+
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/c461f2c6-fea1-4c96-82a6-f0dc29feeb03" />
+
+### 2.3 Structure des composants générés
+
+Cursor devrait avoir produit des fichiers similaires à ceux-ci:
 
 **TaskInput.tsx**
 
@@ -231,10 +255,6 @@ export default function TaskPage() {
 
 </details>
 
-## 🏪 3. Configuration du store Zustand
-
-### 3.1 Types TypeScript
-
 **types/index.ts**
 
 <details>
@@ -258,8 +278,6 @@ export interface TaskStore {
 ```
 
 </details>
-
-### 3.2 Store Zustand avec persistance
 
 **store/index.ts**
 
@@ -319,8 +337,6 @@ export const useTaskStore = create<TaskStore>()(
 
 </details>
 
-### 3.3 Intégration dans App.tsx
-
 **App.tsx**
 
 <details>
@@ -350,15 +366,7 @@ export default App;
 
 ## 🧪 4. Tests E2E avec Playwright
 
-### 4.1 Lancer l'application
-
-```bash
-npm run dev
-```
-
-L'application doit être accessible sur `http://localhost:5173`
-
-### 4.2 Créer des tests via Cursor AI
+### 4.1 Créer des tests via Cursor AI
 
 Dans le chat Cursor, utilisez ces prompts pour tester automatiquement :
 
@@ -382,7 +390,7 @@ Clique sur l'icône de suppression 🗑️
 Vérifie que la tâche a disparu de la liste
 ```
 
-### 4.3 Résultats attendus
+### 4.2 Résultats attendus
 
 ```
 ✅ Test passed: Task successfully added to the list
@@ -390,13 +398,14 @@ Vérifie que la tâche a disparu de la liste
 ✅ Test passed: Task removed from the list
 ```
 
-> 💡 **Astuce** : Activez le mode Auto-Run dans Cursor Settings > Features > MCP pour exécuter les tests sans confirmation manuelle.
+> 💡 **Astuce** : Activez le mode Auto-Run dans Cursor Settings > Chat > Auto-Run pour exécuter les tests sans confirmation manuelle.
+> Si les tests échouent, demandez à Cursor d’en identifier la cause, de corriger les erreurs et de relancer les tests jusqu’à ce qu’ils passent.
 
 ## 🎨 5. Optimisations et finitions
 
 ### 5.1 Filtres et statistiques
 
-Ajoutez des filtres pour améliorer l'UX :
+Ajoutez des filtres pour améliorer l'UX.
 
 **TaskFilter.tsx**
 

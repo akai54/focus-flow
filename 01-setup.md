@@ -28,11 +28,9 @@
 
 Avant de commencer, assurez-vous d'avoir installé :
 
-- **Node.js** (v16+ recommandé) et npm
+- **Node.js** (v16+ recommandé), npm et **npx**
 - **Cursor AI** ([télécharger ici](https://cursor.sh/))
 - **Compte Figma** (pour l'import de designs)
-
-> 💡 **Astuce** : Créez un dossier de projet dédié et ouvrez-le dans Cursor pour bénéficier de l'auto-complétion et des outils IA.
 
 ## 🛠️ 1. Initialisation du projet
 
@@ -75,9 +73,11 @@ Les **MCP (Model Context Protocol)** étendent les capacités de Cursor AI en co
 - **📚 Deepwiki MCP** : Accès aux documentations GitHub
 - **🧪 Playwright MCP** : Tests E2E automatisés
 
+Vous trouverez une liste de serveurs MCP et leurs instructions d'installation respectives ici: [mcp.so](https://mcp.so).
+
 ### 2.1 Configuration complète des MCP
 
-Créez ou éditez le fichier `~/.cursor/mcpServers.json` :
+Créez ou éditez le fichier `~/.cursor/mcpServers.json` (accessible également depuis les paramètres de Cursor). :
 
 <details>
 <summary>📋 Cliquez pour voir la configuration complète</summary>
@@ -85,7 +85,7 @@ Créez ou éditez le fichier `~/.cursor/mcpServers.json` :
 ```json
 {
   "mcpServers": {
-    "Framelink Figma MCP": {
+    "figma": {
       "command": "npx",
       "args": [
         "-y",
@@ -94,13 +94,13 @@ Créez ou éditez le fichier `~/.cursor/mcpServers.json` :
         "--stdio"
       ]
     },
-    "mcp-deepwiki": {
+    "deepwiki": {
       "command": "npx",
       "args": ["-y", "mcp-deepwiki@latest"]
     },
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/mcp@latest"]
+      "args": ["-y", "@playwright/mcp@latest"]
     }
   }
 }
@@ -116,8 +116,10 @@ Créez ou éditez le fichier `~/.cursor/mcpServers.json` :
 
 1. Connectez-vous à [Figma](https://figma.com)
 2. Allez dans **Settings** → **Account** → **Personal Access Tokens**
-3. Générez un nouveau token avec les permissions API
+3. Générez un nouveau token avec les permissions API ci-dessous:
 4. ⚠️ **Conservez ce token précieusement** (il ne sera affiché qu'une seule fois)
+
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/5407a6a1-f6ed-4d35-b346-4b2c157fb012" />
 
 #### Étape 2 : Configurer le token dans Cursor
 
@@ -128,7 +130,7 @@ Remplacez `VOTRE_TOKEN_FIGMA` dans la configuration MCP par votre token.
 Une fois configuré, vous pourrez utiliser la commande `::figma` dans le chat Cursor :
 
 ```
-::figma https://www.figma.com/file/ID/NomDuFichier?node-id=0%3A1
+::figma https://www.figma.com/design/IhVR4yEdIoYXqZWPnjM11R/Untitled
 ```
 
 ### 2.3 Configuration du MCP Deepwiki
@@ -146,19 +148,34 @@ Le MCP Playwright permet d'automatiser les tests E2E directement depuis Cursor.
 
 > 📝 **Note** : La première utilisation peut prendre du temps (téléchargement des navigateurs).
 
-**Test de la configuration :**
-Vérifiez que le serveur Playwright apparaît en "vert" dans la liste des MCP de Cursor.
+### 2.5 Test de la configuration
 
-## 📄 3. Création des règles de projet
+Dans les paramètres de Cursor, vérifiez que les serveurs MCP et notamment le serveur Playwright apparaîssent en "vert".
 
-Les règles de projet guident l'IA dans la génération de code conforme aux spécifications.
+## 📄 3. Création des Cursor rules
 
-### 3.1 Créer feature-planning.md
+Les Cursor rules guident l'IA dans la génération de code conforme aux spécifications: code style, architecture, etc...
+
+### 3.1 Créer .cursor/feature-planning.mdc
+
+Cette première Cursor rule va nous permettre décrire le projet, afin d'orienter l'agent de Cursor. 
+
+Décrivez quelques specifications fonctionnelles pour votre application de gestion de tâches.
+
+Listez également les principales techno utilisés (React + TypeScript + Tailwind CSS + Zustand + Playright + Express.js).
+
+ChatGPT peut vous aider, ou déroulez le contenu caché ci-dessous:
 
 <details>
-<summary>📋 Contenu du fichier feature-planning.md</summary>
+<summary>📋 Contenu du fichier .cursor/feature-planning.mdc</summary>
 
 ```markdown
+---
+description: Features and technical specifications
+globs: 
+alwaysApply: true
+---
+
 # FocusFlow – Feature Planning (Spécifications)
 
 FocusFlow est une application de gestion de tâches basée sur la méthode GTD (Getting Things Done).
@@ -189,10 +206,12 @@ FocusFlow est une application de gestion de tâches basée sur la méthode GTD (
 
 </details>
 
-### 3.2 Créer workflow-ai.md
+### 3.2 Créer .cursor/workflow-ai.mdc
+
+Dans une nouvelle Cursor rule, décrivez ensuite les étapes de construction d'une feature. Rappelez-vous du principe de "chain of thought": incitez Cursor à réaliser vos tâches step by step.
 
 <details>
-<summary>📋 Contenu du fichier workflow-ai.md</summary>
+<summary>📋 Contenu du fichier .cursor/workflow-ai.mdc</summary>
 
 ```markdown
 ---
@@ -227,7 +246,7 @@ Tu es un agent spécialisé dans le développement au sein d'une base de code ex
 
 ## 5. Exécution
 - Complète chaque tâche séquentiellement
-- Vérifie immédiatement après chaque étape
+- Vérifie le code produit et exécute les tests immédiatement après chaque étape
 - Documente les modifications
 
 ## 6. Vérification Finale
@@ -238,21 +257,9 @@ Tu es un agent spécialisé dans le développement au sein d'une base de code ex
 
 </details>
 
-### 3.3 Créer les fichiers
+> ✅ **Vérification**: Les fichiers doivent apparaître dans la section "Rules" des paramètres de Cursor.
 
-```bash
-# Créer feature-planning.md
-cat > feature-planning.md << 'EOF'
-[Contenu du fichier ci-dessus]
-EOF
-
-# Créer workflow-ai.md
-cat > workflow-ai.md << 'EOF'
-[Contenu du fichier ci-dessus]
-EOF
-```
-
-> ✅ **Vérification** : Les fichiers doivent apparaître dans la section "Rules" de Cursor.
+Vous remarquerez que Cursor vous permet d'appliquer ces rules uniquement dans certains dossier, ou pour certains types de fichiers.
 
 ## ➡️ Suite du tutoriel
 
