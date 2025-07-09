@@ -90,7 +90,7 @@ Créez votre propre prompt pour Cursor en pensant à :
 <summary>🆘 Besoin d'aide ? Exemple de prompt</summary>
 
 ```
-Suis les règles : @workflow-ai.md & @feature-planning.md
+Suis les règles : @workflow-ai.mdc & @feature-planning.mdc
 
 Crée la structure backend Express pour FocusFlow :
 
@@ -171,7 +171,7 @@ Créez un prompt pour générer :
 <summary>🆘 Besoin d'aide ? Exemple de prompt</summary>
 
 ```
-Suis les règles : @workflow-ai.md & @feature-planning.md
+Suis les règles : @workflow-ai.mdc & @feature-planning.mdc
 
 Crée les routes API REST pour FocusFlow :
 
@@ -324,7 +324,7 @@ Adaptez le frontend pour utiliser votre API :
 <summary>🆘 Besoin d'aide ? Exemple de prompt</summary>
 
 ```
-Suis les règles : @workflow-ai.md & @feature-planning.md
+Suis les règles : @workflow-ai.mdc & @feature-planning.mdc
 
 Adapte le frontend FocusFlow pour utiliser l'API backend :
 
@@ -504,7 +504,7 @@ Adaptez le frontend pour utiliser votre API :
 <summary>🆘 Besoin d'aide ? Exemple de prompt</summary>
 
 ```
-Suis les règles : @workflow-ai.md & @feature-planning.md
+Suis les règles : @workflow-ai.mdc & @feature-planning.mdc
 
 Adapte le frontend FocusFlow pour utiliser l'API backend :
 
