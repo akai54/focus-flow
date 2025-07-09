@@ -77,7 +77,7 @@ Vous trouverez une liste de serveurs MCP et leurs instructions d'installation re
 
 ### 2.1 Configuration complète des MCP
 
-Créez ou éditez le fichier `~/.cursor/mcpServers.json` (accessible également depuis les paramètres de Cursor). :
+Créez ou éditez le fichier `~/.cursor/mcp.json` (accessible également depuis les paramètres de Cursor). :
 
 <details>
 <summary>📋 Cliquez pour voir la configuration complète</summary>
