@@ -16,7 +16,7 @@
 
 Transformer FocusFlow d'une application locale vers une solution full-stack avec l'assistance de Cursor AI :
 
-- ✅ **API REST** complète générée avec TypeScript
+- ✅ **API REST** complète générée avec JavaScript
 - ✅ **Persistance serveur** remplaçant localStorage
 - ✅ **Service layer** généré automatiquement
 - ✅ **Gestion d'erreurs** et états de chargement
@@ -34,12 +34,11 @@ focusflow/
 ├── src/                    # Frontend React
 ├── api/                    # Backend Express
 │   ├── src/
-│   │   ├── index.ts       # Point d'entrée
+│   │   ├── index.js       # Point d'entrée
 │   │   ├── routes/        # Routes API
 │   │   ├── middleware/    # Middlewares
-│   │   └── types/         # Types TypeScript
-│   ├── package.json
-│   └── tsconfig.json
+│   │   └── utils/         # Utilitaires
+│   └── package.json
 └── package.json           # Frontend
 ```
 
@@ -54,21 +53,41 @@ focusflow/
 
 ### 1.3 Modèle de données
 
-```typescript
-interface Task {
-  id: number;
-  title: string;
-  done: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
+```javascript
+// Structure d'une tâche (exemple)
+const taskExample = {
+  id: 1,
+  title: "Ma tâche",
+  done: false,
+  createdAt: new Date(),
+  updatedAt: new Date()
+};
 ```
 
-## ⚙️ 2. Génération du projet API avec Cursor
+## ⚙️ 2. Défi : Architecture backend
 
-### 2.1 Prompt de configuration initiale
+### 2.1 🎯 Objectif
 
-Dans Cursor, ouvrez le chat Agent (🪄) et utilisez ce prompt structuré :
+Créer la structure d'un backend Express en JavaScript pour votre application FocusFlow.
+
+### 2.2 🤔 Temps de réflexion
+
+Avant de commencer, posez-vous ces questions :
+- Comment organiseriez-vous les fichiers d'une API REST ?
+- Quelles dépendances sont nécessaires pour Express ?
+- Où placeriez-vous les routes, middlewares et utilitaires ?
+- Comment géreriez-vous la configuration (ports, CORS, etc.) ?
+
+### 2.3 💪 À vous de jouer !
+
+Créez votre propre prompt pour Cursor en pensant à :
+1. La structure de dossiers que vous voulez
+2. Les dépendances nécessaires (express, cors, dotenv...)
+3. La configuration du projet (package.json, scripts)
+4. Les bonnes pratiques Express 2024
+
+<details>
+<summary>🆘 Besoin d'aide ? Exemple de prompt</summary>
 
 ```
 Suis les règles : @workflow-ai.md & @feature-planning.md
@@ -76,44 +95,41 @@ Suis les règles : @workflow-ai.md & @feature-planning.md
 Crée la structure backend Express pour FocusFlow :
 
 1. **Analyse** : Examine la structure frontend existante
-2. **Architecture** : Crée un dossier `api/` avec structure TypeScript
-3. **Configuration** : Génère package.json, tsconfig.json et scripts de développement
-4. **Dépendances** : Installe express, cors, dotenv + types TypeScript
+2. **Architecture** : Crée un dossier `api/` avec structure JavaScript
+3. **Configuration** : Génère package.json et scripts de développement
+4. **Dépendances** : Installe express, cors, dotenv
 
 Structure attendue :
 ```
 api/
 ├── src/
-│   ├── index.ts
+│   ├── index.js
 │   ├── routes/
 │   ├── middleware/
-│   └── types/
-├── package.json
-└── tsconfig.json
+│   └── utils/
+└── package.json
 ```
 
-Utilise les meilleures pratiques TypeScript et Express 2024.
+Utilise les meilleures pratiques JavaScript et Express 2024.
 ```
 
-### 2.2 Vérification via Cursor Agent
+</details>
 
-**Réponse attendue :**
-```
-[Agent] Structure backend créée avec succès :
+### 2.4 ✅ Points de contrôle
 
-✅ Dossier api/ initialisé
-✅ package.json avec scripts de développement
-✅ tsconfig.json optimisé pour Express + TypeScript
-✅ Dépendances installées (express, cors, dotenv, types)
-✅ Structure src/ préparée pour l'API REST
+Vérifiez que Cursor a bien créé :
 
-Commandes disponibles :
-- npm run dev : Démarrage en mode développement
-- npm run build : Compilation TypeScript
-- npm run start : Démarrage en production
-```
+- ✅ **Dossier api/** initialisé
+- ✅ **package.json** avec scripts de développement
+- ✅ **Dépendances** installées (express, cors, dotenv)
+- ✅ **Structure src/** préparée pour l'API REST
+- ✅ **Scripts npm** pour dev/start
 
-### 2.3 Vérification manuelle
+**Commandes attendues :**
+- `npm run dev` : Démarrage en mode développement
+- `npm start` : Démarrage en production
+
+### 2.5 📝 Vérification manuelle
 
 ```bash
 # Vérifier la structure générée
@@ -125,180 +141,106 @@ cd api && npm run dev
 
 > ✅ **Validation** : Le serveur doit démarrer sans erreur sur le port 3001.
 
-## 🚀 3. Implémentation de l'API Express
+### 2.6 🏆 Challenge bonus
 
-### 3.1 Génération des types TypeScript
+Pensez déjà à votre prochaine étape : quels endpoints d'API allez-vous créer ?
 
-Dans Cursor, utilisez ce prompt pour générer les types :
+## 🚀 3. Défi : Implémentation des routes API
 
-```
-Suis les règles : @workflow-ai.md & @feature-planning.md
+### 3.1 🎯 Objectif
 
-Crée les types TypeScript pour l'API FocusFlow :
+Créer les routes d'une API REST pour gérer les tâches (CRUD complet).
 
-1. **Analyse** : Examine les types existants dans le frontend
-2. **Interface Task** : Compatible avec le store Zustand actuel
-3. **Types API** : Requests/responses pour REST endpoints
-4. **Validation** : Types pour la validation des données
+### 3.2 🤔 Réflexion REST
 
-Endpoints requis :
-- GET /api/tasks (liste des tâches)
-- POST /api/tasks (créer tâche)
-- PUT /api/tasks/:id (modifier tâche)
-- DELETE /api/tasks/:id (supprimer tâche)
+Quelle est la logique d'une API REST pour les tâches ?
+- Quels sont les 4 opérations CRUD de base ?
+- Quels codes de statut HTTP utiliser ?
+- Comment structurer vos réponses JSON ?
+- Comment gérer les erreurs ?
 
-Fichier : api/src/types/index.ts
-```
+### 3.3 💪 Votre mission
 
-**Code généré attendu :**
-
-<details>
-<summary>🔍 Types générés - api/src/types/index.ts</summary>
-
-```typescript
-export interface Task {
-  id: number;
-  title: string;
-  done: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface CreateTaskRequest {
-  title: string;
-}
-
-export interface UpdateTaskRequest {
-  title?: string;
-  done?: boolean;
-}
-
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
-```
-
-</details>
-
-### 3.2 Génération du middleware de validation
-
-Prompt Cursor pour le middleware :
-
-```
-Suis les règles : @workflow-ai.md & @feature-planning.md
-
-Crée les middlewares de validation pour l'API FocusFlow :
-
-1. **Analyse** : Utilise les types créés précédemment
-2. **Validation création** : Vérifier title (requis, string, max 255 chars)
-3. **Validation mise à jour** : Vérifier title optionnel et done boolean
-4. **Gestion erreurs** : Retourner des messages d'erreur clairs en français
-5. **TypeScript** : Typage strict avec Request/Response
-
-Fichier : api/src/middleware/validation.ts
-Respect les bonnes pratiques Express 2024.
-```
-
-**Code généré attendu :**
+Créez un prompt pour générer :
+1. **Routes principales** : GET, POST, PUT, DELETE pour `/api/tasks`
+2. **Gestion d'erreurs** : Try/catch et messages clairs
+3. **Validation** : Vérifier les données reçues
+4. **Structure de réponse** : Format JSON consistant
 
 <details>
-<summary>🔍 Middleware généré - api/src/middleware/validation.ts</summary>
-
-```typescript
-import { Request, Response, NextFunction } from 'express';
-
-export const validateTaskCreation = (req: Request, res: Response, next: NextFunction) => {
-  const { title } = req.body;
-  
-  if (!title || typeof title !== 'string' || title.trim().length === 0) {
-    return res.status(400).json({
-      success: false,
-      error: 'Le titre de la tâche est requis et ne peut pas être vide'
-    });
-  }
-  
-  if (title.length > 255) {
-    return res.status(400).json({
-      success: false,
-      error: 'Le titre ne peut pas dépasser 255 caractères'
-    });
-  }
-  
-  next();
-};
-
-export const validateTaskUpdate = (req: Request, res: Response, next: NextFunction) => {
-  const { title, done } = req.body;
-  
-  if (title !== undefined && (typeof title !== 'string' || title.trim().length === 0)) {
-    return res.status(400).json({
-      success: false,
-      error: 'Le titre doit être une chaîne non vide'
-    });
-  }
-  
-  if (done !== undefined && typeof done !== 'boolean') {
-    return res.status(400).json({
-      success: false,
-      error: 'Le statut "done" doit être un booléen'
-    });
-  }
-  
-  next();
-};
-```
-
-</details>
-
-### 3.3 Génération des routes API
-
-Prompt Cursor pour les routes complètes :
+<summary>🆘 Besoin d'aide ? Exemple de prompt</summary>
 
 ```
 Suis les règles : @workflow-ai.md & @feature-planning.md
 
 Crée les routes API REST pour FocusFlow :
 
-1. **Analyse** : Utilise les types et middlewares créés
+1. **Analyse** : Comprends la logique CRUD pour les tâches
 2. **Endpoints** : GET, POST, PUT, DELETE pour /api/tasks
-3. **Stockage** : Utilise un stockage en mémoire (array)
-4. **Gestion erreurs** : Try/catch avec messages explicites
-5. **TypeScript** : Typage strict pour Request/Response
+3. **Stockage** : Utilise un tableau en mémoire pour commencer
+4. **Validation** : Vérifie les données (titre requis, etc.)
+5. **Réponses** : Format JSON avec success/data/error
 
-Spécifications :
-- GET /api/tasks : Liste triée par date de création
-- POST /api/tasks : Création avec validation
-- PUT /api/tasks/:id : Modification partielle
-- DELETE /api/tasks/:id : Suppression
+Endpoints à implémenter :
+- GET /api/tasks : Liste des tâches
+- POST /api/tasks : Créer une tâche
+- PUT /api/tasks/:id : Modifier une tâche
+- DELETE /api/tasks/:id : Supprimer une tâche
 
-Fichier : api/src/routes/tasks.ts
-Respect les conventions REST 2024.
+Utilise JavaScript et les bonnes pratiques Express 2024.
 ```
 
-**Code généré attendu :**
+</details>
+
+### 3.4 📝 Structure de données
+
+Rappel de la structure d'une tâche :
+
+```javascript
+// Exemple d'objet tâche
+const task = {
+  id: 1,
+  title: "Ma tâche",
+  done: false,
+  createdAt: new Date(),
+  updatedAt: new Date()
+};
+
+// Exemple de réponse API
+const response = {
+  success: true,
+  data: task, // ou array de tasks
+  error: null
+};
+```
+
+### 3.5 ✅ Points de contrôle
+
+Vérifiez que votre API générée inclut :
+
+- ✅ **4 routes CRUD** : GET, POST, PUT, DELETE
+- ✅ **Gestion d'erreurs** : Try/catch sur chaque route
+- ✅ **Validation** : Vérification des données
+- ✅ **Codes HTTP** : 200, 201, 400, 404, 500
+- ✅ **Réponses JSON** : Format consistant
 
 <details>
-<summary>🔍 Routes générées - api/src/routes/tasks.ts</summary>
+<summary>🔍 Exemple de code généré attendu</summary>
 
-```typescript
-import { Router, Request, Response } from 'express';
-import { Task, CreateTaskRequest, UpdateTaskRequest, ApiResponse } from '../types';
-import { validateTaskCreation, validateTaskUpdate } from '../middleware/validation';
+```javascript
+const express = require('express');
+const router = express.Router();
 
-const router = Router();
-
-// Stockage en mémoire (remplacer par une BDD en production)
-let tasks: Task[] = [];
+// Stockage en mémoire
+let tasks = [];
 let nextId = 1;
 
-// GET /api/tasks - Récupérer toutes les tâches
-router.get('/', (req: Request, res: Response<ApiResponse<Task[]>>) => {
+// GET /api/tasks
+router.get('/', (req, res) => {
   try {
     res.json({
       success: true,
-      data: tasks.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      data: tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     });
   } catch (error) {
     res.status(500).json({
@@ -308,18 +250,24 @@ router.get('/', (req: Request, res: Response<ApiResponse<Task[]>>) => {
   }
 });
 
-// POST /api/tasks - Créer une nouvelle tâche
-router.post('/', validateTaskCreation, (req: Request<{}, ApiResponse<Task>, CreateTaskRequest>, res: Response<ApiResponse<Task>>) => {
+// POST /api/tasks
+router.post('/', (req, res) => {
   try {
     const { title } = req.body;
-    const now = new Date();
     
-    const newTask: Task = {
+    if (!title || typeof title !== 'string' || title.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Le titre est requis'
+      });
+    }
+    
+    const newTask = {
       id: nextId++,
       title: title.trim(),
       done: false,
-      createdAt: now,
-      updatedAt: now
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
     
     tasks.push(newTask);
@@ -331,92 +279,24 @@ router.post('/', validateTaskCreation, (req: Request<{}, ApiResponse<Task>, Crea
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Erreur lors de la création de la tâche'
+      error: 'Erreur lors de la création'
     });
   }
 });
 
-// PUT /api/tasks/:id - Modifier une tâche
-router.put('/:id', validateTaskUpdate, (req: Request<{ id: string }, ApiResponse<Task>, UpdateTaskRequest>, res: Response<ApiResponse<Task>>) => {
-  try {
-    const taskId = parseInt(req.params.id, 10);
-    
-    if (isNaN(taskId)) {
-      return res.status(400).json({
-        success: false,
-        error: 'ID de tâche invalide'
-      });
-    }
-    
-    const taskIndex = tasks.findIndex(task => task.id === taskId);
-    
-    if (taskIndex === -1) {
-      return res.status(404).json({
-        success: false,
-        error: 'Tâche non trouvée'
-      });
-    }
-    
-    const { title, done } = req.body;
-    const updatedTask = {
-      ...tasks[taskIndex],
-      ...(title !== undefined && { title: title.trim() }),
-      ...(done !== undefined && { done }),
-      updatedAt: new Date()
-    };
-    
-    tasks[taskIndex] = updatedTask;
-    
-    res.json({
-      success: true,
-      data: updatedTask
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Erreur lors de la modification de la tâche'
-    });
-  }
-});
+// PUT et DELETE similaires...
 
-// DELETE /api/tasks/:id - Supprimer une tâche
-router.delete('/:id', (req: Request<{ id: string }>, res: Response<ApiResponse<void>>) => {
-  try {
-    const taskId = parseInt(req.params.id, 10);
-    
-    if (isNaN(taskId)) {
-      return res.status(400).json({
-        success: false,
-        error: 'ID de tâche invalide'
-      });
-    }
-    
-    const taskIndex = tasks.findIndex(task => task.id === taskId);
-    
-    if (taskIndex === -1) {
-      return res.status(404).json({
-        success: false,
-        error: 'Tâche non trouvée'
-      });
-    }
-    
-    tasks.splice(taskIndex, 1);
-    
-    res.json({
-      success: true
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Erreur lors de la suppression de la tâche'
-    });
-  }
-});
-
-export default router;
+module.exports = router;
 ```
 
 </details>
+
+### 3.6 🏆 Challenge bonus
+
+**Pour aller plus loin :**
+- Ajoutez une route de recherche : `GET /api/tasks/search?q=terme`
+- Implémentez une pagination : `GET /api/tasks?page=1&limit=10`
+- Créez un middleware de logging des requêtes
 
 ### 3.4 Génération du serveur principal
 
@@ -557,21 +437,40 @@ FRONTEND_URL=http://localhost:5173
 
 > ⚠️ **Sécurité** : Cursor ajoute automatiquement `api/.env` au `.gitignore` pour éviter de commiter les secrets.
 
-## 🔄 4. Adaptation du frontend
+## 🔄 5. Défi : Intégration frontend
 
-### 4.1 Génération du service API
+### 5.1 🎯 Objectif
 
-Prompt Cursor pour créer le service API côté frontend :
+Faire communiquer votre frontend React avec l'API backend que vous venez de créer.
+
+### 5.2 🤔 Réflexion intégration
+
+Comment connecter un frontend à une API ?
+- Où appeler les endpoints de votre API ?
+- Comment gérer les erreurs réseau ?
+- Comment remplacer localStorage par des appels API ?
+- Où stocker l'URL de l'API ?
+
+### 5.3 💪 Mission intégration
+
+Adaptez le frontend pour utiliser votre API :
+1. **Service API** : Créer un service pour les appels fetch
+2. **Store Zustand** : Modifier pour utiliser l'API au lieu de localStorage
+3. **Gestion d'erreurs** : Afficher les erreurs réseau
+4. **Loading states** : Afficher les états de chargement
+
+<details>
+<summary>🆘 Besoin d'aide ? Exemple de prompt</summary>
 
 ```
 Suis les règles : @workflow-ai.md & @feature-planning.md
 
 Adapte le frontend FocusFlow pour utiliser l'API backend :
 
-1. **Analyse** : Examine le store Zustand actuel
-2. **Service API** : Crée un service pour communiquer avec l'API
-3. **Types** : Assure la cohérence avec les types backend
-4. **Gestion erreurs** : Implemente une classe ApiError
+1. **Service API** : Crée un service pour communiquer avec l'API
+2. **Store Zustand** : Remplace localStorage par appels API
+3. **Gestion erreurs** : Affiche les erreurs réseau
+4. **Loading states** : Ajoute des indicateurs de chargement
 5. **Environnement** : Utilise VITE_API_URL pour la configuration
 
 Endpoints à implémenter :
@@ -580,40 +479,37 @@ Endpoints à implémenter :
 - updateTask(id, updates) : PUT /api/tasks/:id
 - deleteTask(id) : DELETE /api/tasks/:id
 
-Fichier : src/services/api.ts
-Respect les bonnes pratiques fetch API 2024.
+Utilise JavaScript et les bonnes pratiques fetch API 2024.
 ```
 
-**Code généré attendu :**
+</details>
+
+### 5.4 ✅ Points de contrôle
+
+Vérifiez que votre intégration inclut :
+
+- ✅ **Service API** : Fonctions pour tous les endpoints
+- ✅ **Store modifié** : Appels API au lieu de localStorage
+- ✅ **Gestion d'erreurs** : Affichage des erreurs réseau
+- ✅ **Loading states** : Indicateurs de chargement
+- ✅ **Configuration** : URL de l'API via .env
 
 <details>
-<summary>🔍 Service API généré - src/services/api.ts</summary>
+<summary>🔍 Exemple de code attendu</summary>
 
-```typescript
+```javascript
+// src/services/api.js
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
-
-export interface Task {
-  id: number;
-  title: string;
-  done: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
 class ApiError extends Error {
-  constructor(message: string, public status?: number) {
+  constructor(message, status) {
     super(message);
     this.name = 'ApiError';
+    this.status = status;
   }
 }
 
-async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+async function apiCall(endpoint, options = {}) {
   try {
     const response = await fetch(`${API_URL}${endpoint}`, {
       headers: {
@@ -623,79 +519,46 @@ async function apiCall<T>(endpoint: string, options: RequestInit = {}): Promise<
       ...options,
     });
 
-    const data: ApiResponse<T> = await response.json();
+    const data = await response.json();
 
     if (!data.success) {
-      throw new ApiError(data.error || 'Erreur API inconnue', response.status);
+      throw new ApiError(data.error || 'Erreur API', response.status);
     }
 
-    return data.data as T;
+    return data.data;
   } catch (error) {
     if (error instanceof ApiError) {
       throw error;
     }
-    
-    throw new ApiError(
-      error instanceof Error ? error.message : 'Erreur de connexion',
-      0
-    );
+    throw new ApiError('Erreur de connexion', 0);
   }
 }
 
 export const taskApi = {
-  // Récupérer toutes les tâches
-  getTasks: (): Promise<Task[]> =>
-    apiCall<Task[]>('/tasks'),
-
-  // Créer une nouvelle tâche
-  createTask: (title: string): Promise<Task> =>
-    apiCall<Task>('/tasks', {
-      method: 'POST',
-      body: JSON.stringify({ title }),
-    }),
-
-  // Modifier une tâche
-  updateTask: (id: number, updates: { title?: string; done?: boolean }): Promise<Task> =>
-    apiCall<Task>(`/tasks/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(updates),
-    }),
-
-  // Supprimer une tâche
-  deleteTask: (id: number): Promise<void> =>
-    apiCall<void>(`/tasks/${id}`, {
-      method: 'DELETE',
-    }),
+  getTasks: () => apiCall('/tasks'),
+  createTask: (title) => apiCall('/tasks', {
+    method: 'POST',
+    body: JSON.stringify({ title }),
+  }),
+  updateTask: (id, updates) => apiCall(`/tasks/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(updates),
+  }),
+  deleteTask: (id) => apiCall(`/tasks/${id}`, {
+    method: 'DELETE',
+  }),
 };
 ```
 
 </details>
 
-### 4.2 Migration du store Zustand
+### 5.5 🏆 Challenge bonus
 
-Prompt Cursor pour adapter le store existant :
-
-```
-Suis les règles : @workflow-ai.md & @feature-planning.md
-
-Migre le store Zustand existant pour utiliser l'API backend :
-
-1. **Analyse** : Examine le store actuel (localStorage)
-2. **Remplacement** : Remplace localStorage par appels API
-3. **Loading states** : Ajoute loading et error states
-4. **Optimistic updates** : Implemente pour une meilleure UX
-5. **Gestion erreurs** : Rollback en cas d'échec API
-
-Fonctionnalités :
-- loadTasks() : Charger depuis l'API au démarrage
-- addTask(title) : Créer via API
-- toggleTask(id) : Modifier via API avec optimistic update
-- removeTask(id) : Supprimer via API avec optimistic update
-- clearError() : Gestion des erreurs
-
-Fichier : src/store/index.ts
-Conserve la compatibilité avec les composants existants.
-```
+**Optimisations avancées :**
+- Implémentez des "optimistic updates" (mise à jour optimiste)
+- Ajoutez un cache local pour les tâches
+- Créez un système de retry automatique
+- Ajoutez des indicateurs de synchronisation
 
 **Code généré attendu :**
 
@@ -959,35 +822,56 @@ VITE_API_URL=http://localhost:3001/api
 
 </details>
 
-## 🧪 5. Tests automatisés avec Playwright MCP
+## 🧪 6. Défi : Tests d'intégration
 
-### 5.1 Configuration des tests avec Cursor
+### 6.1 🎯 Objectif
 
-Prompt Cursor pour les tests automatisés :
+Vérifier que votre intégration frontend/backend fonctionne parfaitement.
+
+### 6.2 🤔 Réflexion tests
+
+Comment tester une intégration complète ?
+- Quels sont les parcours utilisateur critiques ?
+- Comment vérifier la persistance des données ?
+- Que faire si l'API est indisponible ?
+- Comment tester les états de chargement ?
+
+### 6.3 💪 Mission tests
+
+Créez des tests qui vérifient :
+1. **Cycle CRUD complet** : Ajout, modification, suppression
+2. **Persistance** : Rechargement de page
+3. **Gestion d'erreurs** : Serveur indisponible
+4. **UX** : États de chargement
+
+<details>
+<summary>🆘 Besoin d'aide ? Utilisez Playwright MCP</summary>
+
+Dans Cursor, utilisez directement le MCP Playwright avec ces instructions :
 
 ```
-Suis les règles : @workflow-ai.md & @feature-planning.md
+Execute les tests E2E suivants sur http://localhost:5173 :
 
-Configure les tests E2E avec Playwright MCP pour FocusFlow :
+**Test 1 - Cycle complet :**
+1. Ouvre l'application
+2. Ajoute une tâche "Test intégration API"
+3. Vérifie qu'elle apparaît dans la liste
+4. Coche la tâche
+5. Recharge la page
+6. Vérifie que la tâche reste cochée
+7. Supprime la tâche
 
-1. **Analyse** : Tests de l'intégration complète frontend/backend
-2. **Scénarios** : Flux utilisateur complet avec persistance
-3. **Playwright MCP** : Utilise le serveur MCP configuré
-4. **Assertions** : Vérifie la persistance serveur
-
-Tests à implémenter :
-- Ajout d'une tâche avec vérification API
-- Modification d'une tâche (toggle done)
-- Suppression d'une tâche
-- Persistance après rechargement de page
-- Gestion des erreurs API
-
-Utilise Playwright MCP pour automatiser ces tests.
+**Test 2 - Gestion d'erreurs :**
+1. Arrête le serveur backend
+2. Essaie d'ajouter une tâche
+3. Vérifie l'affichage du message d'erreur
 ```
 
-### 5.2 Démarrage des services
+</details>
 
-Avant les tests, démarrez les deux services :
+### 6.4 🔧 Préparation des tests
+
+Avant de tester, démarrez vos deux services :
 
 **Terminal 1 - Backend :**
 ```bash
@@ -1000,206 +884,148 @@ npm run dev
 npm run dev
 ```
 
-### 5.3 Exécution des tests via Cursor
-
-Dans Cursor, utilisez le MCP Playwright :
-
-```
-Execute les tests E2E suivants sur http://localhost:5173 :
-
-**Test 1 - Cycle complet :**
-1. Ouvre l'application
-2. Ajoute une tâche "Test API Integration"
-3. Vérifie qu'elle apparaît dans la liste
-4. Coche la tâche pour la marquer terminée
-5. Recharge la page
-6. Vérifie que la tâche reste cochée (persistance)
-7. Supprime la tâche
-8. Vérifie qu'elle disparaît définitivement
-
-**Test 2 - Gestion d'erreurs :**
-1. Arrête le serveur backend
-2. Essaie d'ajouter une tâche
-3. Vérifie l'affichage du message d'erreur
-4. Redémarre le serveur
-5. Vérifie le rechargement automatique
-```
-
-### 5.4 Validation des endpoints API
-
-Prompt Cursor pour tester les endpoints :
-
-```
-Vérifie les endpoints API avec des requêtes de test :
-
-**Commandes de validation :**
+**Terminal 3 - Tests manuels :**
 ```bash
-# Health check
+# Testez vos endpoints
 curl http://localhost:3001/health
-
-# Lister les tâches
 curl http://localhost:3001/api/tasks
-
-# Créer une tâche
-curl -X POST http://localhost:3001/api/tasks \
-  -H "Content-Type: application/json" \
-  -d '{"title":"Test curl"}'
-
-# Modifier une tâche
-curl -X PUT http://localhost:3001/api/tasks/1 \
-  -H "Content-Type: application/json" \
-  -d '{"done":true}'
 ```
 
-Utilise le terminal intégré pour exécuter ces commandes.
-```
+### 6.5 ✅ Checklist de tests
 
-### 5.5 Rapport de tests automatisé
+**Tests à réaliser :**
 
-**Résultats attendus via Playwright MCP :**
-```
-[Playwright] Tests E2E FocusFlow - Intégration complète
+- ✅ **Ajout tâche** : Fonctionne et apparaît dans la liste
+- ✅ **Modification tâche** : Toggle done fonctionne
+- ✅ **Suppression tâche** : Disparaît définitivement
+- ✅ **Persistance** : Reste après rechargement
+- ✅ **Gestion d'erreurs** : Message d'erreur si API indisponible
+- ✅ **Loading states** : Indicateurs de chargement
+- ✅ **Endpoints API** : Tous les endpoints répondent correctement
 
-✅ Test 1 - Cycle complet : PASSED
-  - Ajout de tâche : OK
-  - Affichage en liste : OK
-  - Toggle done : OK
-  - Persistance après reload : OK
-  - Suppression : OK
+### 6.6 🏆 Challenge bonus
 
-✅ Test 2 - Gestion d'erreurs : PASSED
-  - Erreur API affichée : OK
-  - Récupération après reconnexion : OK
+**Tests avancés :**
+- Testez la gestion des requêtes simultanées
+- Vérifiez les performances avec beaucoup de tâches
+- Testez la résilience à la perte de connexion
+- Créez un test de charge basique
 
-📊 Résumé : 2/2 tests passés avec succès
-```
+### 6.7 🎉 Félicitations !
 
-## 📦 6. Déploiement et production
+Si tous vos tests passent, vous avez réussi à :
+- ✅ Créer une API REST fonctionnelle
+- ✅ Intégrer frontend et backend
+- ✅ Gérer les erreurs réseau
+- ✅ Tester l'intégration complète
 
-### 6.1 Optimisation pour la production
+Vous avez maintenant une application full-stack opérationnelle !
 
-Prompt Cursor pour optimiser le déploiement :
+## 📦 7. Défi : Déploiement (Bonus)
 
-```
-Suis les règles : @workflow-ai.md & @feature-planning.md
+### 7.1 🎯 Objectif
 
-Optimise FocusFlow pour la production :
+Mettre votre application FocusFlow en ligne pour la montrer au monde !
 
-1. **Analyse** : Examine la configuration actuelle
-2. **Build backend** : Compilation TypeScript et optimisations
-3. **Build frontend** : Optimisations Vite et bundle size
-4. **Environnement** : Variables de production
-5. **Scripts** : Commandes de déploiement
+### 7.2 🤔 Réflexion déploiement
+
+Comment déployer une application full-stack ?
+- Où héberger le frontend ? Le backend ?
+- Comment gérer les variables d'environnement ?
+- Quelles sont les étapes de build ?
+- Comment configurer les domaines et CORS ?
+
+### 7.3 💪 Mission déploiement
+
+Choisissez votre stratégie de déploiement :
+
+**Options recommandées :**
+- **Frontend** : Vercel, Netlify, GitHub Pages
+- **Backend** : Railway, Render, Heroku
+- **Full-stack** : Vercel (avec API routes)
 
 **Commandes de build :**
 ```bash
+# Frontend
+npm run build
+
 # Backend
-cd api && npm run build && npm start
+cd api && npm start
+```
+
+### 7.4 ✅ Checklist de déploiement
+
+**Avant de déployer :**
+
+- ✅ **Build local** : Vérifiez que `npm run build` fonctionne
+- ✅ **Variables d'env** : Configurez les URLs de production
+- ✅ **CORS** : Autorisez votre domaine frontend
+- ✅ **Tests** : Tous les tests passent
+- ✅ **Optimisations** : Images, bundles, etc.
+
+**Variables d'environnement production :**
+```bash
+# Backend
+NODE_ENV=production
+FRONTEND_URL=https://votre-app.vercel.app
+PORT=3001
 
 # Frontend
-npm run build && npm run preview
+VITE_API_URL=https://votre-api.railway.app/api
 ```
 
-Génère les configurations optimisées pour la production.
-```
+### 7.5 🏆 Challenge bonus
 
-### 6.2 Dockerisation avec Cursor
+**Améliorations pour la production :**
+- Ajoutez une vraie base de données (PostgreSQL, MongoDB)
+- Implémentez un système d'authentification
+- Ajoutez du monitoring et des logs
+- Configurez un CI/CD avec GitHub Actions
+- Optimisez les performances (cache, CDN)
 
-Prompt Cursor pour Docker :
+### 7.6 🎉 Bravo !
 
-```
-Crée les configurations Docker pour FocusFlow :
+Si vous avez déployé votre application, vous avez maintenant :
+- ✅ Une application full-stack en ligne
+- ✅ Maîtrise des déploiements modernes
+- ✅ Expérience complète du développement web
 
-**Dockerfile backend** :
-- Base : node:18-alpine
-- Multi-stage build pour optimisation
-- Exposition port 3001
-- Sécurité : non-root user
+Partagez votre création avec vos amis ! 🎆
 
-**Docker-compose** :
-- Service backend
-- Service frontend
-- Réseaux et volumes
-
-Fichiers : api/Dockerfile, docker-compose.yml
-```
-
-**Configuration générée :**
-
-<details>
-<summary>🔍 Dockerfile - api/Dockerfile</summary>
-
-```dockerfile
-FROM node:18-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci --only=production
-
-COPY dist ./dist
-
-EXPOSE 3001
-
-CMD ["node", "dist/index.js"]
-```
-
-</details>
-
-### 6.3 Déploiement assisté par Cursor
-
-Prompt Cursor pour les plateformes de déploiement :
-
-```
-Guide le déploiement FocusFlow sur les plateformes modernes :
-
-**Frontend (Vercel/Netlify) :**
-- Configuration build : `npm run build`
-- Variables d'environnement : VITE_API_URL
-- Domaine custom et SSL
-
-**Backend (Railway/Render) :**
-- Configuration build : `npm run build`
-- Variables d'environnement : PORT, NODE_ENV
-- Health check : /health
-
-**Base de données (optionnel) :**
-- PostgreSQL (Supabase, Railway)
-- Migration du stockage en mémoire
-
-Génère les configurations de déploiement.
-```
-
-**Plateformes recommandées :**
-- 📱 **Frontend** : Vercel, Netlify, GitHub Pages
-- 💻 **Backend** : Railway, Render, Heroku
-- 📎 **Base de données** : PostgreSQL (Supabase, Railway)
-
-## ✅ Résultat final
+## ✅ Bravo ! Vous avez réussi !
 
 Vous avez maintenant maîtrisé le développement full-stack avec Cursor AI :
 
-- ✅ **Frontend React** moderne généré avec l'IA
-- ✅ **Backend Express** avec API REST automatisée
-- ✅ **Persistance serveur** remplaçant localStorage
+- ✅ **API REST** complète créée avec JavaScript
+- ✅ **Intégration frontend/backend** opérationnelle
+- ✅ **Persistance serveur** remplacant localStorage
 - ✅ **Gestion d'erreurs** et états de chargement
-- ✅ **Tests E2E** automatisés avec Playwright MCP
+- ✅ **Tests d'intégration** avec Playwright MCP
 - ✅ **Architecture scalable** prête pour la production
 - ✅ **Workflow IA** avec Chain of Thought et MCP
 
-### 🪄 Compétences acquises
+### 🤓 Compétences développées
 
 **Maîtrise de Cursor AI :**
-- Configuration et utilisation des MCP (Model Context Protocol)
-- Prompts structurés pour génération de code
+- Création de prompts efficaces et structurés
+- Utilisation des MCP pour les tests automatiques
 - Workflow Chain of Thought pour le développement
-- Tests automatisés avec Playwright MCP
+- Approche itérative et autonome
 
 **Développement full-stack :**
-- API REST avec Express.js et TypeScript
+- API REST avec Express.js et JavaScript
 - Intégration frontend/backend avec gestion d'erreurs
-- Optimistic updates et persistance serveur
-- Déploiement et production
+- Tests d'intégration et validation
+- Préparation au déploiement
+
+### 🔥 Ce que vous savez maintenant faire
+
+- **Concevoir** une architecture backend adaptée
+- **Implémenter** des endpoints REST fonctionnels
+- **Intégrer** frontend et backend de manière robuste
+- **Tester** l'intégration complète
+- **Réfléchir** avant de coder (pas de copier-coller !)
+- **Utiliser** l'IA comme un assistant, pas une béquille
 
 ---
 
@@ -1214,4 +1040,6 @@ Vous avez maintenant maîtrisé le développement full-stack avec Cursor AI :
 
 > 🎉 **Félicitations !** Vous maîtrisez maintenant le développement full-stack avec l'assistance de l'IA Cursor. FocusFlow est prêt pour la production !
 > 
-> 💡 **Et maintenant ?** Explorez d'autres projets, intégrez des bases de données, ou ajoutez des fonctionnalités avancées avec l'aide de Cursor AI !
+> 💡 **Et maintenant ?** Continuez à explorer, créez vos propres projets, et rappelez-vous : l'IA est votre assistant, votre cerveau reste le chef d'orchestre ! 🎼
+>
+> 🚀 **Prochaines étapes :** Bases de données, authentification, déploiement, et tout ce que votre imagination peut concevoir !
