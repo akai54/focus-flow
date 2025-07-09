@@ -156,7 +156,7 @@ Dans les paramètres de Cursor, vérifiez que les serveurs MCP et notamment le s
 
 Les Cursor rules guident l'IA dans la génération de code conforme aux spécifications: code style, architecture, etc...
 
-### 3.1 Créer .cursor/feature-planning.mdc
+### 3.1 Créer .cursor/rules/feature-planning.mdc
 
 Cette première Cursor rule va nous permettre décrire le projet, afin d'orienter l'agent de Cursor. 
 
@@ -167,7 +167,7 @@ Listez également les principales techno utilisés (React + TypeScript + Tailwin
 ChatGPT peut vous aider, ou déroulez le contenu caché ci-dessous:
 
 <details>
-<summary>📋 Contenu du fichier .cursor/feature-planning.mdc</summary>
+<summary>📋 Contenu du fichier .cursor/rules/feature-planning.mdc</summary>
 
 ```markdown
 ---
@@ -206,12 +206,12 @@ FocusFlow est une application de gestion de tâches basée sur la méthode GTD (
 
 </details>
 
-### 3.2 Créer .cursor/workflow-ai.mdc
+### 3.2 Créer .cursor/rules/workflow-ai.mdc
 
 Dans une nouvelle Cursor rule, décrivez ensuite les étapes de construction d'une feature. Rappelez-vous du principe de "chain of thought": incitez Cursor à réaliser vos tâches step by step.
 
 <details>
-<summary>📋 Contenu du fichier .cursor/workflow-ai.mdc</summary>
+<summary>📋 Contenu du fichier .cursor/rules/workflow-ai.mdc</summary>
 
 ```markdown
 ---
