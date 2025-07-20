@@ -1,49 +1,27 @@
 import { Router } from 'express'
+import { ObjectId } from 'mongodb'
 
 const router = Router()
 
-// In-memory data store
-let tasks = [
-  {
-    id: 1,
-    title: 'Setup the project',
-    done: true,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 2,
-    title: 'Create the backend',
-    done: false,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 3,
-    title: 'Create the frontend',
-    done: false,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-]
-let nextId = 4
-
 // GET /api/tasks - Get all tasks with pagination
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 10
+    const skip = (page - 1) * limit
 
-    const startIndex = (page - 1) * limit
-    const endIndex = page * limit
-
-    const results = tasks.slice(startIndex, endIndex)
-    const totalItems = tasks.length
+    const tasksCollection = req.db.collection('tasks')
+    const tasks = await tasksCollection
+      .find({})
+      .skip(skip)
+      .limit(limit)
+      .toArray()
+    const totalItems = await tasksCollection.countDocuments()
     const totalPages = Math.ceil(totalItems / limit)
 
     res.json({
       success: true,
-      data: results,
+      data: tasks.map((t) => ({ ...t, id: t._id })),
       pagination: {
         totalItems,
         totalPages,
@@ -60,7 +38,7 @@ router.get('/', (req, res) => {
 })
 
 // GET /api/tasks/search?q=... - Search for tasks
-router.get('/search', (req, res) => {
+router.get('/search', async (req, res) => {
   try {
     const { q } = req.query
 
@@ -70,11 +48,18 @@ router.get('/search', (req, res) => {
         .json({ success: false, data: null, error: 'Search query is required' })
     }
 
-    const searchResults = tasks.filter((task) =>
-      task.title.toLowerCase().includes(q.toString().toLowerCase())
-    )
+    const tasks = await req.db
+      .collection('tasks')
+      .find({
+        title: { $regex: q, $options: 'i' }
+      })
+      .toArray()
 
-    res.json({ success: true, data: searchResults, error: null })
+    res.json({
+      success: true,
+      data: tasks.map((t) => ({ ...t, id: t._id })),
+      error: null
+    })
   } catch (error) {
     res
       .status(500)
@@ -83,7 +68,7 @@ router.get('/search', (req, res) => {
 })
 
 // POST /api/tasks - Create a new task
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { title } = req.body
 
@@ -94,15 +79,16 @@ router.post('/', (req, res) => {
     }
 
     const newTask = {
-      id: nextId++,
       title,
       done: false,
       createdAt: new Date(),
       updatedAt: new Date()
     }
 
-    tasks.push(newTask)
-    res.status(201).json({ success: true, data: newTask, error: null })
+    const result = await req.db.collection('tasks').insertOne(newTask)
+    const insertedTask = { ...newTask, id: result.insertedId }
+
+    res.status(201).json({ success: true, data: insertedTask, error: null })
   } catch (error) {
     res
       .status(500)
@@ -111,29 +97,38 @@ router.post('/', (req, res) => {
 })
 
 // PUT /api/tasks/:id - Update a task
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params
     const { title, done } = req.body
-    const taskIndex = tasks.findIndex((t) => t.id === parseInt(id))
 
-    if (taskIndex === -1) {
+    if (!ObjectId.isValid(id)) {
+      return res
+        .status(400)
+        .json({ success: false, data: null, error: 'Invalid task ID' })
+    }
+
+    const updates = { $set: { updatedAt: new Date() } }
+    if (title !== undefined) updates.$set.title = title
+    if (done !== undefined) updates.$set.done = done
+
+    const result = await req.db
+      .collection('tasks')
+      .findOneAndUpdate({ _id: new ObjectId(id) }, updates, {
+        returnDocument: 'after'
+      })
+
+    if (!result.value) {
       return res
         .status(404)
         .json({ success: false, data: null, error: 'Task not found' })
     }
 
-    const updatedTask = { ...tasks[taskIndex] }
-    if (title !== undefined) {
-      updatedTask.title = title
-    }
-    if (done !== undefined) {
-      updatedTask.done = done
-    }
-    updatedTask.updatedAt = new Date()
-
-    tasks[taskIndex] = updatedTask
-    res.json({ success: true, data: updatedTask, error: null })
+    res.json({
+      success: true,
+      data: { ...result.value, id: result.value._id },
+      error: null
+    })
   } catch (error) {
     res
       .status(500)
@@ -142,18 +137,26 @@ router.put('/:id', (req, res) => {
 })
 
 // DELETE /api/tasks/:id - Delete a task
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params
-    const taskIndex = tasks.findIndex((t) => t.id === parseInt(id))
 
-    if (taskIndex === -1) {
+    if (!ObjectId.isValid(id)) {
+      return res
+        .status(400)
+        .json({ success: false, data: null, error: 'Invalid task ID' })
+    }
+
+    const result = await req.db
+      .collection('tasks')
+      .deleteOne({ _id: new ObjectId(id) })
+
+    if (result.deletedCount === 0) {
       return res
         .status(404)
         .json({ success: false, data: null, error: 'Task not found' })
     }
 
-    tasks.splice(taskIndex, 1)
     res.status(204).send()
   } catch (error) {
     res
