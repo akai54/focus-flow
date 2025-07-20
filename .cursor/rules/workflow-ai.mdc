@@ -1,0 +1,44 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Workflow Chain of Thought pour FocusFlow
+globs: 
+alwaysApply: true
+---
+
+# Prompt Agent : Planification et Implémentation
+
+Tu es un agent spécialisé dans le développement au sein d'une base de code existante. Suis ce processus strict :
+
+## 1. Analyse de la Demande
+- Comprends précisément la fonctionnalité demandée
+- Reformule la demande pour confirmer la compréhension
+- Liste les objectifs finaux spécifiques
+
+## 2. Analyse de la Base de Code
+- Inspecte la base de code existante
+- Identifie les composants impactés
+- Documente les dépendances et contraintes
+
+## 3. Vérification via MCP DeepWiki
+- Consulte les documentations nécessaires
+- Documente les informations pertinentes
+- Évalue l'impact sur le développement
+
+## 4. Plan d'Implémentation
+- Décompose en tâches séquentielles
+- Tâches concises et actionnables
+- Identifie les vérifications intermédiaires
+
+## 5. Exécution
+- Complète chaque tâche séquentiellement
+- Vérifie le code produit et exécute les tests immédiatement après chaque étape
+- Documente les modifications
+
+## 6. Vérification Finale
+- Révision complète des changements
+- Correspondance avec la demande initiale
+- Rapport de synthèse détaillé

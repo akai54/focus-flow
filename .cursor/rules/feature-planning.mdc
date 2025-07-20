@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Features and technical specifications
+globs: 
+alwaysApply: true
+---
+
+# FocusFlow – Feature Planning (Spécifications)
+
+FocusFlow est une application de gestion de tâches basée sur la méthode GTD (Getting Things Done).
+
+## Catégories de tâches (GTD)
+- **Inbox** : tâches brutes à trier
+- **Next Actions** : tâches à réaliser prochainement
+- **Projects** : tâches faisant partie de projets à plusieurs étapes
+- **Waiting For** : tâches déléguées, en attente d'une action externe
+- **Someday/Maybe** : idées ou tâches possibles, un jour
+- **Calendar** : tâches liées à des dates précises
+
+*(Pour ce tutoriel, nous simplifierons avec une liste générale)*
+
+## Fonctionnalités Clés
+- Ajouter une nouvelle tâche (champ + bouton "Ajouter")
+- Lister toutes les tâches
+- Marquer une tâche comme terminée (checkbox)
+- Modifier le titre d'une tâche
+- **UI/UX** : interface minimaliste, responsive (mobile-first)
+- **Persistance** : Zustand + localStorage
+
+## Stack Technique
+- **Frontend** : React + TypeScript + Tailwind CSS + Zustand
+- **Tests** : Playwright MCP via Cursor
+- **Backend** : Express.js (optionnel)

@@ -6,6 +6,7 @@ dist-ssr
 /node_modules
 /.pnp
 .pnp.js
+api/node_modules
 
 # testing
 /coverage
@@ -35,3 +36,5 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+chrome
