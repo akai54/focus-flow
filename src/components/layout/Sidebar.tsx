@@ -102,7 +102,7 @@ const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
                   }`
                 : undefined
             }
-            size="small"
+            size="medium"
           />
           <div className="min-w-0 flex-1">
             <div className="text-sm font-medium text-white">
