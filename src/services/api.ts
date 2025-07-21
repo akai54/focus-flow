@@ -30,15 +30,11 @@ const convertTask = (backendTask: {
 })
 
 export const getTasks = async () => {
-  console.log('Making request to:', `${API_URL}/tasks`)
   const response = await fetchWithCredentials(`${API_URL}/tasks`)
-  console.log('Response status:', response.status)
   const data = await handleResponse(response)
-  console.log('Raw data from API:', data)
 
   // Convert the tasks to the expected frontend format
   const convertedTasks = data.map(convertTask)
-  console.log('Converted tasks:', convertedTasks)
 
   return convertedTasks
 }
@@ -125,11 +121,23 @@ export const updateUserProfile = async (userData: {
   lastName?: string
   dateOfBirth?: string | Date
   country?: string
+  avatar?: string
 }) => {
   const response = await fetchWithCredentials(`${API_URL}/auth/profile`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userData)
+  })
+  return handleResponse(response)
+}
+
+export const uploadAvatar = async (file: File) => {
+  const formData = new FormData()
+  formData.append('avatar', file)
+
+  const response = await fetchWithCredentials(`${API_URL}/auth/upload-avatar`, {
+    method: 'POST',
+    body: formData
   })
   return handleResponse(response)
 }

@@ -14,6 +14,7 @@ interface User {
   lastName?: string
   dateOfBirth?: Date | null
   country?: string
+  avatar?: string
 }
 
 interface AuthState {
@@ -30,6 +31,7 @@ interface AuthState {
       lastName?: string
       dateOfBirth?: string | Date
       country?: string
+      avatar?: string
     }
   ) => Promise<void>
   updateProfile: (userData: {
@@ -37,7 +39,9 @@ interface AuthState {
     lastName?: string
     dateOfBirth?: string | Date
     country?: string
+    avatar?: string
   }) => Promise<void>
+  uploadAvatar: (file: File) => Promise<void>
   getProfile: () => Promise<void>
   logout: () => void
 }
@@ -79,6 +83,18 @@ const useAuthStore = create<AuthState>()(
         try {
           const { updateUserProfile } = await import('../services/api')
           const updatedUser = await updateUserProfile(userData)
+          set({ user: updatedUser, loading: false })
+        } catch (error) {
+          set({ error: (error as Error).message, loading: false })
+          throw error
+        }
+      },
+
+      uploadAvatar: async (file: File) => {
+        set({ loading: true, error: null })
+        try {
+          const { uploadAvatar } = await import('../services/api')
+          const updatedUser = await uploadAvatar(file)
           set({ user: updatedUser, loading: false })
         } catch (error) {
           set({ error: (error as Error).message, loading: false })

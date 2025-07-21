@@ -1,9 +1,32 @@
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import multer from 'multer'
+import path from 'path'
+import fs from 'fs'
 import catchAsync from '../utils/catchAsync.js'
+import authMiddleware from '../middleware/auth.js'
 
 const router = Router()
+
+// Configure Multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = 'public/uploads/avatars'
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
+    }
+    cb(null, dir)
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      `${req.user.userId}-${Date.now()}${path.extname(file.originalname)}`
+    )
+  }
+})
+
+const upload = multer({ storage })
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -35,8 +58,15 @@ const createSendToken = (user, statusCode, req, res) => {
 router.post(
   '/register',
   catchAsync(async (req, res) => {
-    const { email, password, firstName, lastName, dateOfBirth, country } =
-      req.body
+    const {
+      email,
+      password,
+      firstName,
+      lastName,
+      dateOfBirth,
+      country,
+      avatar
+    } = req.body
 
     if (!email || !password) {
       return res
@@ -61,6 +91,7 @@ router.post(
       lastName: lastName || '',
       dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
       country: country || '',
+      avatar: avatar || '',
       createdAt: new Date(),
       updatedAt: new Date()
     }
@@ -114,13 +145,8 @@ router.get('/logout', (req, res) => {
 // Get current user profile
 router.get(
   '/profile',
+  authMiddleware,
   catchAsync(async (req, res) => {
-    if (!req.user || !req.user.userId) {
-      return res
-        .status(401)
-        .json({ success: false, error: 'Not authenticated' })
-    }
-
     const { ObjectId } = await import('mongodb')
     const userId = new ObjectId(req.user.userId)
 
@@ -140,17 +166,12 @@ router.get(
 // Update user profile
 router.put(
   '/profile',
+  authMiddleware,
   catchAsync(async (req, res) => {
-    if (!req.user || !req.user.userId) {
-      return res
-        .status(401)
-        .json({ success: false, error: 'Not authenticated' })
-    }
-
     const { ObjectId } = await import('mongodb')
     const userId = new ObjectId(req.user.userId)
 
-    const { firstName, lastName, dateOfBirth, country } = req.body
+    const { firstName, lastName, dateOfBirth, country, avatar } = req.body
 
     const updateData = {
       $set: {
@@ -163,6 +184,7 @@ router.put(
     if (dateOfBirth !== undefined)
       updateData.$set.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : null
     if (country !== undefined) updateData.$set.country = country
+    if (avatar !== undefined) updateData.$set.avatar = avatar
 
     const result = await req.db
       .collection('users')
@@ -170,6 +192,37 @@ router.put(
         returnDocument: 'after',
         projection: { password: 0 }
       })
+
+    if (!result) {
+      return res.status(404).json({ success: false, error: 'User not found' })
+    }
+
+    res.status(200).json({ success: true, data: result })
+  })
+)
+
+router.post(
+  '/upload-avatar',
+  authMiddleware,
+  upload.single('avatar'),
+  catchAsync(async (req, res) => {
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'No file uploaded.' })
+    }
+
+    const { ObjectId } = await import('mongodb')
+    const userId = new ObjectId(req.user.userId)
+    const avatarUrl = `/uploads/avatars/${req.file.filename}`
+
+    const result = await req.db
+      .collection('users')
+      .findOneAndUpdate(
+        { _id: userId },
+        { $set: { avatar: avatarUrl, updatedAt: new Date() } },
+        { returnDocument: 'after', projection: { password: 0 } }
+      )
 
     if (!result) {
       return res.status(404).json({ success: false, error: 'User not found' })
