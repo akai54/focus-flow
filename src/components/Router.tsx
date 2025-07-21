@@ -1,13 +1,32 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import LandingPage from './pages/LandingPage'
-import AppLayout from './pages/AppLayout'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import AppLayout from '../components/pages/AppLayout'
+import LandingPage from '../components/pages/LandingPage'
+import LoginPage from '../pages/LoginPage'
+import RegisterPage from '../pages/RegisterPage'
+import ProtectedRoute from '../components/auth/ProtectedRoute'
+import useAuthStore from '../store/authStore'
 
-function Router() {
+const Router = () => {
+  const { isAuthenticated } = useAuthStore()
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/app/*" element={<AppLayout />} />
+        <Route
+          path="/"
+          element={!isAuthenticated ? <LandingPage /> : <Navigate to="/app" />}
+        />
+        <Route
+          path="/login"
+          element={!isAuthenticated ? <LoginPage /> : <Navigate to="/app" />}
+        />
+        <Route
+          path="/register"
+          element={!isAuthenticated ? <RegisterPage /> : <Navigate to="/app" />}
+        />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/app/*" element={<AppLayout />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )

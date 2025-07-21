@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom'
+import useAuthStore from '../../store/authStore'
 import useTaskStore from '../../store/taskStore'
 import {
   TasksIcon,
@@ -37,6 +39,8 @@ const SyncSpinner = () => (
 
 const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
   const { loading } = useTaskStore()
+  const { user, logout } = useAuthStore()
+  const navigate = useNavigate()
   const menuItems = [
     { id: 'home', label: 'Home', icon: HomeIcon },
     { id: 'tasks', label: 'My Tasks', icon: TasksIcon },
@@ -44,6 +48,11 @@ const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
     { id: 'reports', label: 'Reports', icon: ReportsIcon },
     { id: 'settings', label: 'Settings', icon: SettingsIcon }
   ]
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
 
   return (
     <div className="flex h-screen w-80 flex-col bg-dark p-4 font-spline">
@@ -80,14 +89,29 @@ const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
 
       {/* User Profile */}
       <div className="mt-auto border-t border-dark-border pt-4">
-        <div className="flex cursor-pointer items-center gap-3 rounded-xl p-3 transition-colors hover:bg-dark-card">
+        <div
+          onClick={() => setActiveTab('settings')}
+          className="flex cursor-pointer items-center gap-3 rounded-xl p-3 transition-colors hover:bg-dark-card"
+        >
           <div className="size-8 rounded-full bg-gradient-to-r from-primary to-primary-dark"></div>
           <div className="min-w-0 flex-1">
-            <div className="text-sm font-medium text-white">User</div>
-            <div className="truncate text-xs text-primary-light">
-              user@focusflow.com
+            <div className="text-sm font-medium text-white">
+              {user?.firstName
+                ? `${user.firstName} ${user.lastName || ''}`
+                : user?.email || 'User'}
+            </div>
+            <div className="text-xs text-primary-light">
+              View Profile & Settings
             </div>
           </div>
+        </div>
+        <div className="mt-2 px-3">
+          <button
+            onClick={handleLogout}
+            className="w-full rounded-lg bg-red-600 py-1.5 text-sm font-medium text-white hover:bg-red-700"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </div>

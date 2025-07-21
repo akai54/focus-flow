@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import useTaskStore, { Task } from '../../store/taskStore'
 
 interface TaskItemProps {
@@ -9,19 +9,38 @@ const TaskItem = ({ task }: TaskItemProps) => {
   const { updateTask, deleteTask, loading } = useTaskStore()
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState(task.title)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current?.focus()
+      inputRef.current?.select()
+    }
+  }, [isEditing])
 
   const handleToggle = () => {
     if (loading) return
     updateTask(task.id, { done: !task.done })
   }
 
-  const handleSave = () => {
-    if (loading || !title.trim() || title === task.title) {
+  const handleSave = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault()
+
+    // Do nothing if there are no changes
+    if (!title.trim() || title === task.title) {
       setIsEditing(false)
       return
     }
-    updateTask(task.id, { title: title.trim() })
-    setIsEditing(false)
+
+    try {
+      await updateTask(task.id, { title: title.trim() })
+    } catch (err) {
+      console.error('Failed to update task:', err)
+      // Revert title on error
+      setTitle(task.title)
+    } finally {
+      setIsEditing(false)
+    }
   }
 
   const handleDelete = () => {
@@ -48,16 +67,17 @@ const TaskItem = ({ task }: TaskItemProps) => {
       />
       <div className="flex-1">
         {isEditing ? (
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            onBlur={handleSave}
-            onKeyDown={(e) => e.key === 'Enter' && handleSave()}
-            className="w-full border-b border-primary-light bg-transparent font-medium text-white focus:border-primary focus:outline-none"
-            autoFocus
-            disabled={loading}
-          />
+          <form onSubmit={handleSave}>
+            <input
+              ref={inputRef}
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              onBlur={() => handleSave()}
+              className="w-full border-b border-primary-light bg-transparent font-medium text-white focus:border-primary focus:outline-none"
+              disabled={loading}
+            />
+          </form>
         ) : (
           <span
             className={`font-medium ${
