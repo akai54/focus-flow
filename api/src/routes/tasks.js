@@ -3,25 +3,28 @@ import { ObjectId } from 'mongodb'
 
 const router = Router()
 
-// GET /api/tasks - Get all tasks with pagination
+// GET /api/tasks - Get all tasks for the logged-in user
 router.get('/', async (req, res) => {
   try {
+    const userId = new ObjectId(req.user.userId)
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 10
     const skip = (page - 1) * limit
 
     const tasksCollection = req.db.collection('tasks')
+    const query = { userId }
+
     const tasks = await tasksCollection
-      .find({})
+      .find(query)
       .skip(skip)
       .limit(limit)
       .toArray()
-    const totalItems = await tasksCollection.countDocuments()
+    const totalItems = await tasksCollection.countDocuments(query)
     const totalPages = Math.ceil(totalItems / limit)
 
     res.json({
       success: true,
-      data: tasks.map((t) => ({ ...t, id: t._id })),
+      data: tasks.map((t) => ({ ...t, id: t._id.toString() })),
       pagination: {
         totalItems,
         totalPages,
@@ -37,40 +40,11 @@ router.get('/', async (req, res) => {
   }
 })
 
-// GET /api/tasks/search?q=... - Search for tasks
-router.get('/search', async (req, res) => {
-  try {
-    const { q } = req.query
-
-    if (!q) {
-      return res
-        .status(400)
-        .json({ success: false, data: null, error: 'Search query is required' })
-    }
-
-    const tasks = await req.db
-      .collection('tasks')
-      .find({
-        title: { $regex: q, $options: 'i' }
-      })
-      .toArray()
-
-    res.json({
-      success: true,
-      data: tasks.map((t) => ({ ...t, id: t._id })),
-      error: null
-    })
-  } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, data: null, error: 'Internal Server Error' })
-  }
-})
-
-// POST /api/tasks - Create a new task
+// POST /api/tasks - Create a new task for the logged-in user
 router.post('/', async (req, res) => {
   try {
     const { title } = req.body
+    const userId = new ObjectId(req.user.userId)
 
     if (!title) {
       return res
@@ -79,6 +53,7 @@ router.post('/', async (req, res) => {
     }
 
     const newTask = {
+      userId,
       title,
       done: false,
       createdAt: new Date(),
@@ -86,7 +61,7 @@ router.post('/', async (req, res) => {
     }
 
     const result = await req.db.collection('tasks').insertOne(newTask)
-    const insertedTask = { ...newTask, id: result.insertedId }
+    const insertedTask = { ...newTask, id: result.insertedId.toString() }
 
     res.status(201).json({ success: true, data: insertedTask, error: null })
   } catch (error) {
@@ -96,11 +71,12 @@ router.post('/', async (req, res) => {
   }
 })
 
-// PUT /api/tasks/:id - Update a task
+// PUT /api/tasks/:id - Update a task for the logged-in user
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params
     const { title, done } = req.body
+    const userId = new ObjectId(req.user.userId)
 
     if (!ObjectId.isValid(id)) {
       return res
@@ -114,19 +90,21 @@ router.put('/:id', async (req, res) => {
 
     const result = await req.db
       .collection('tasks')
-      .findOneAndUpdate({ _id: new ObjectId(id) }, updates, {
+      .findOneAndUpdate({ _id: new ObjectId(id), userId }, updates, {
         returnDocument: 'after'
       })
 
-    if (!result.value) {
-      return res
-        .status(404)
-        .json({ success: false, data: null, error: 'Task not found' })
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        data: null,
+        error: 'Task not found or you do not have permission to edit it'
+      })
     }
 
     res.json({
       success: true,
-      data: { ...result.value, id: result.value._id },
+      data: { ...result, id: result._id.toString() },
       error: null
     })
   } catch (error) {
@@ -136,10 +114,11 @@ router.put('/:id', async (req, res) => {
   }
 })
 
-// DELETE /api/tasks/:id - Delete a task
+// DELETE /api/tasks/:id - Delete a task for the logged-in user
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params
+    const userId = new ObjectId(req.user.userId)
 
     if (!ObjectId.isValid(id)) {
       return res
@@ -149,12 +128,14 @@ router.delete('/:id', async (req, res) => {
 
     const result = await req.db
       .collection('tasks')
-      .deleteOne({ _id: new ObjectId(id) })
+      .deleteOne({ _id: new ObjectId(id), userId })
 
     if (result.deletedCount === 0) {
-      return res
-        .status(404)
-        .json({ success: false, data: null, error: 'Task not found' })
+      return res.status(404).json({
+        success: false,
+        data: null,
+        error: 'Task not found or you do not have permission to delete it'
+      })
     }
 
     res.status(204).send()
