@@ -26,6 +26,7 @@ export interface TaskStore {
     updates: Partial<Pick<Task, 'title' | 'done'>>
   ) => Promise<void>
   deleteTask: (id: string) => Promise<void>
+  clearTasks: () => void
 }
 
 const useTaskStore = create<TaskStore>()(
@@ -58,13 +59,10 @@ const useTaskStore = create<TaskStore>()(
       updateTask: async (id, updates) => {
         set({ loading: true, error: null })
         try {
-          const updatedTask = await apiUpdateTask(id, updates)
-          set((state) => ({
-            tasks: state.tasks.map((task) =>
-              task.id === id ? updatedTask : task
-            ),
-            loading: false
-          }))
+          await apiUpdateTask(id, updates)
+          // After a successful update, refetch the entire list to ensure consistency
+          const tasks = await getTasks()
+          set({ tasks, loading: false })
         } catch (error) {
           set({ error: (error as Error).message, loading: false })
         }
@@ -80,7 +78,9 @@ const useTaskStore = create<TaskStore>()(
         } catch (error) {
           set({ error: (error as Error).message, loading: false })
         }
-      }
+      },
+
+      clearTasks: () => set({ tasks: [] })
     }),
     {
       name: 'focusflow-tasks', // key in localStorage
